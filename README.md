@@ -1,5 +1,9 @@
 # Cold Chain Cyber Assurance — Public PoC 5.0
 
+[![CI / Formal Verification](https://github.com/GhostDriftTheory/verifiable-coldchain-cyber-assurance/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/GhostDriftTheory/verifiable-coldchain-cyber-assurance/actions/workflows/verify.yml)
+
+**Verification:** Lean 4 formal proofs (37 theorems), 768 implementation-conformance checks, and public evidence verification are validated through GitHub Actions.
+
 **品質が正常でも、その引き渡しを実行してよいとは限らない。**
 
 受領権限、証拠、上流の保留、実行直前の変化、実行結果を分けて確認する公開PoCです。不成立の要求を止め、正常な要求は通し、結果不一致を成功扱いしない挙動を、自分で条件を変えて確かめられます。
