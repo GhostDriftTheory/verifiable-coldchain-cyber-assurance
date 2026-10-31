@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; base-uri 'none'; object-src 'none'; form-action 'none'">
+<title>コールドチェーン・サイバーアシュアランス | 操作できる公開PoC</title>
+<style>
+:root{color-scheme:light;--ink:#152124;--sub:#546366;--line:#d8e0df;--bg:#f4f6f5;--paper:#fff;--brand:#165c54;--light:#eaf3ef;--warn:#81541a;--warm:#fbf3e6;--bad:#873f39;--red:#fbefed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI','Yu Gothic',Meiryo,sans-serif}button,select,input,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:wait;opacity:.52}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #568a80;outline-offset:3px}a{color:var(--brand)}[hidden]{display:none!important}.shell{max-width:1200px;margin:auto;padding:0 26px}.topline{display:flex;justify-content:space-between;align-items:center;padding:21px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.13em;font-weight:700}.edition{font-weight:500;color:var(--sub);letter-spacing:.03em}.hero{display:flex;justify-content:space-between;gap:30px;padding:30px 0 25px}.hero h1{font-size:clamp(26px,3.4vw,39px);line-height:1.35;letter-spacing:.02em;margin:0 0 12px}.hero p{margin:0;color:var(--sub);max-width:690px}.hero-note{width:240px;flex-shrink:0;align-self:center;border-left:2px solid var(--brand);padding-left:19px;font-size:12px;line-height:1.9}.hero-note b{font-size:13px}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow:auto}.tab{background:none;border:0;border-bottom:3px solid transparent;padding:12px 20px 11px;color:var(--sub);font-size:13px;white-space:nowrap;font-weight:600}.tab[aria-selected=true]{border-color:var(--brand);color:var(--brand)}.tab small{font-size:10px;margin-right:9px;opacity:.7}.sectionhead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:15px}h2{font-size:19px;line-height:1.5;margin:0 0 5px}h3{font-size:15px;line-height:1.5;margin:0 0 8px}p{margin:7px 0}.sub,.note{font-size:12px;color:var(--sub)}.scopechip{font-size:11px;border:1px solid var(--line);background:white;padding:5px 9px;border-radius:4px;white-space:nowrap}.presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 18px}.preset{border:1px solid var(--line);background:white;color:var(--ink);text-align:left;padding:10px 12px;border-radius:5px;font-size:12px;min-height:45px}.preset[aria-pressed=true]{border-color:var(--brand);background:var(--light)}.preset small{font-size:10px;color:var(--sub);margin-right:7px}.workspace{display:grid;grid-template-columns:322px minmax(0,1fr);gap:16px}.panel{background:white;border:1px solid var(--line);border-radius:7px;padding:20px;min-width:0}.inputhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.inputhead select{max-width:130px;padding:5px;border:1px solid var(--line);border-radius:4px;font-size:12px;background:#fff}.formrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf0ef;font-size:12px;cursor:pointer}.formrow select{padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:white;color:var(--ink);font-size:12px;max-width:126px}.formrow input{width:17px;height:17px;accent-color:var(--brand);flex-shrink:0}.formrow .hint{display:block;color:var(--sub);font-size:10px}.formrow strong{font-weight:500}.btn{background:#fff;border:1px solid var(--line);color:var(--ink);padding:9px 13px;border-radius:4px;font-size:12px;font-weight:600}.btn.main{background:var(--brand);color:white;border-color:var(--brand)}.btn.dark{background:var(--ink);color:white;border-color:var(--ink)}.btn.full{width:100%;margin-top:14px;padding:11px}.buttonrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.smallbtn{border:0;background:transparent;padding:3px;color:var(--sub);font-size:11px;text-decoration:underline}.livehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.badge{display:inline-block;padding:4px 9px;border-radius:4px;font-size:12px;font-weight:700;background:var(--light);color:var(--brand);border:1px solid #bcd4c9;white-space:nowrap}.badge.hold{background:var(--warm);color:var(--warn);border-color:#e1cda9}.badge.deny{background:var(--red);color:var(--bad);border-color:#e2c3bf}.badge.quarantine{background:var(--warm);color:var(--warn);border-color:#d9be92}.eyebrow{font-size:10px;letter-spacing:.06em;color:var(--sub);margin-bottom:4px}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.lane{border:1px solid var(--line);border-radius:5px;padding:15px;background:#fafbfa}.lane.controlled{border-color:#b8cdc5;background:#f4f8f6}.lanehead{display:flex;align-items:center;justify-content:space-between;gap:7px;font-size:12px;font-weight:700}.lanehead small{font-size:10px;font-weight:400;color:var(--sub)}.numbers{display:grid;grid-template-columns:repeat(3,1fr);margin:12px 0 8px;gap:7px}.numbers b{display:block;font-size:29px;line-height:1.3;font-variant-numeric:tabular-nums}.numbers span{font-size:10px;color:var(--sub)}.lane p{font-size:11px;line-height:1.6;min-height:36px;color:var(--sub);margin-bottom:0}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 10px}.flow span{font-size:11px;text-align:center;padding:8px 3px;border:1px solid var(--line);background:#fafbfa;border-radius:3px;color:var(--sub)}.flow .done{background:var(--light);border-color:#bad0c5;color:var(--brand)}.flow .stopped{background:var(--warm);border-color:#d9be92;color:var(--warn)}.explanation{border-left:3px solid var(--brand);padding:9px 12px;background:#f4f8f6;font-size:13px;min-height:58px}.resultnote{font-size:11px;color:var(--sub);margin-top:9px}.statusline{min-height:24px;font-size:12px;color:var(--sub);margin-top:12px}.statusline.error{color:var(--bad)}.lower{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.history{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.history span{font-size:11px;border:1px solid var(--line);padding:4px 7px;background:#fafbfa}.history .current{border-color:var(--brand);color:var(--brand)}.factline{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #edf0ef;font-size:12px}.factline strong{font-size:13px}.toast{border:1px solid var(--line);background:var(--bg);padding:13px;border-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;min-height:64px;margin-top:12px}.toast.pass{border-color:#bad0c5;background:var(--light)}.toast.fail{border-color:#e1cda9;background:var(--warm)}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.kpi{border:1px solid var(--line);background:white;padding:16px;border-radius:5px}.kpi b{display:block;font-size:28px;line-height:1.4}.kpi b small{font-size:14px;font-weight:400;color:var(--sub)}.kpi span{font-size:11px;color:var(--sub)}.evidence-layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0 12px}.filters input,.filters select,.field{width:100%;min-width:0;border:1px solid var(--line);border-radius:4px;background:white;padding:8px;font-size:12px;color:var(--ink)}.filters input{flex:1}.filters select{width:105px}.caselist{height:391px;overflow:auto;padding:2px 5px 2px 0}.caseitem{border:1px solid transparent;border-bottom:1px solid #e9edeb;border-radius:4px;display:block;width:100%;background:white;text-align:left;padding:9px;font-size:12px;color:var(--ink)}.caseitem[aria-pressed=true]{border-color:var(--brand);background:var(--light)}.caseitem small{display:block;font-size:10px;color:var(--sub)}.evidence-counts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;border:1px solid var(--line);padding:15px;border-radius:5px;background:#fafbfa}.evidence-counts strong{display:block;font-size:36px;line-height:1.35}.evidence-counts span{font-size:11px;color:var(--sub)}.interpret{padding-top:11px;margin-top:12px;border-top:1px solid var(--line)}.interpret p{font-size:12px}.verifylayout{display:grid;grid-template-columns:1fr 1fr;gap:16px}textarea.field{height:230px;font:11px/1.6 ui-monospace,Consolas,monospace;resize:vertical;tab-size:2;white-space:pre}.filebtn{display:inline-flex;align-items:center;cursor:pointer}input[type=file]{display:none}details{margin-top:12px;font-size:12px}summary{cursor:pointer;color:var(--sub);font-weight:600}code{font:11px/1.6 ui-monospace,Consolas,monospace;overflow-wrap:anywhere;word-break:break-all}pre{background:var(--bg);padding:12px;border:1px solid var(--line);border-radius:4px;overflow:auto;white-space:pre-wrap}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}.scope-table{width:100%;border-collapse:collapse;font-size:12px}.scope-table td,.scope-table th{padding:11px 8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}.scope-table th{font-weight:600;width:30%}.scope-table td b{font-size:12px}.scope-table .no{color:var(--sub)}.callout{border-left:3px solid var(--brand);padding:13px 15px;background:#f0f5f2;margin-top:15px;font-size:12px}.recordselect{margin-top:15px;padding:14px;border:1px solid var(--line);background:var(--light);border-radius:5px}.recordselect select{padding:7px;max-width:100%;margin:8px 0;border:1px solid var(--line);background:white}.mini-table{overflow:auto;margin-top:12px}.mini-table table{width:100%;font-size:11px;border-collapse:collapse}.mini-table td,.mini-table th{border-bottom:1px solid var(--line);padding:7px;text-align:left}footer{border-top:1px solid var(--line);margin-top:24px;padding:17px 0 24px;font-size:11px;color:var(--sub);display:flex;justify-content:space-between;gap:16px}.noscript{background:var(--warm);padding:20px}
+@media(max-width:900px){.workspace{grid-template-columns:285px minmax(0,1fr)}.panel{padding:16px}.hero-note{width:210px}.numbers b{font-size:25px}.evidence-layout{grid-template-columns:280px minmax(0,1fr)}.tab{padding:11px 14px}}
+@media(max-width:720px){.shell{padding:0 16px}.topline{font-size:10px;padding:17px 0}.hero{padding:23px 0 19px;display:block}.hero h1{font-size:28px}.hero-note{width:auto;margin-top:17px;padding-left:12px;font-size:11px}.hero-note br{display:none}.hero-note b{font-size:11px}.hero p{font-size:12px}.tabs{margin-bottom:18px;gap:0}.tab{padding:10px 12px;font-size:12px}.tab small{display:none}.sectionhead{display:block}.scopechip{display:inline-block;margin-top:7px}.presets{grid-template-columns:repeat(2,1fr)}.preset{font-size:11px;padding:9px;min-height:42px}.workspace,.lower,.verifylayout,.twocol,.evidence-layout{grid-template-columns:1fr}.inputpanel{order:0}.comparison{gap:8px}.lane{padding:12px}.lanehead{display:block}.lanehead small{display:block}.numbers{gap:5px}.numbers b{font-size:26px}.numbers span{font-size:9px}.flow span{font-size:10px;padding:7px 2px}.panel{padding:17px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:12px}.kpi b{font-size:27px}.caselist{height:220px}.evidence-counts{margin:16px 0}.livehead{gap:8px}footer{display:block}.scope-table th{width:33%}.field{font-size:12px}.buttonrow .btn{flex-grow:1}.topline .edition{font-size:9px}h2{font-size:18px}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .12s,border-color .12s}}
+</style></head><body>
+<noscript><div class="noscript">操作デモにはJavaScriptが必要です。Python版は <code>python poc.py</code> で動きます。</div></noscript>
+<div class="shell">
+<header><div class="topline"><span>COLD CHAIN / CYBER ASSURANCE</span><span class="edition">AI ASSURANCE · PUBLIC PoC 05</span></div>
+<div class="hero"><div><h1>その引き渡しを、<br>実行してよいか。</h1><p>品質だけでなく、権限・証拠・実行結果まで。<br>止めるべき操作を止め、確認できた結果だけを次へつなぐ。</p></div><div class="hero-note"><b>触って確かめる公開PoC。</b><br>公開モデルを動かす。<br>Leanモデルと実装を照合する。<br>50ケースの観測証拠も確認する。<br><span class="note">合成データ · 実設備未接続<br>外部通信なし</span></div></div></header>
+<nav class="tabs" role="tablist" aria-label="PoCの機能"><button class="tab" role="tab" id="tab-demo" aria-controls="panel-demo" aria-selected="true" data-tab="demo"><small>01</small>動かして比較</button><button class="tab" role="tab" id="tab-evidence" aria-controls="panel-evidence" aria-selected="false" tabindex="-1" data-tab="evidence"><small>02</small>実測50ケース</button><button class="tab" role="tab" id="tab-verify" aria-controls="panel-verify" aria-selected="false" tabindex="-1" data-tab="verify"><small>03</small>記録を検証</button><button class="tab" role="tab" id="tab-formal" aria-controls="panel-formal" aria-selected="false" tabindex="-1" data-tab="formal"><small>04</small>形式検証</button><button class="tab" role="tab" id="tab-scope" aria-controls="panel-scope" aria-selected="false" tabindex="-1" data-tab="scope"><small>05</small>範囲と使い方</button></nav>
+<main>
+<section id="panel-demo" role="tabpanel" aria-labelledby="tab-demo">
+<div class="sectionhead"><div><h2>条件を変えて、実行の違いを確かめる。</h2><p class="sub">新しい模擬操作を、このブラウザで実行します。Pythonやサーバーの起動は不要です。</p></div><span class="scopechip">公開参照モデル · 非公開エンジンとは別実装</span></div>
+<div class="presets" id="presets" aria-label="代表ケース"></div>
+<div class="workspace">
+<section class="panel inputpanel"><div class="inputhead"><h3>引き渡しの条件</h3><select id="allcases" aria-label="全30ケースから選択" data-interactive></select></div>
+<label class="formrow"><span>品質の申告状態<span class="hint">温度閾値ではなく、合成の分類を指定</span></span><select id="quality" data-interactive><option value="ok">条件内</option><option value="review">要確認</option><option value="fail">条件外</option></select></label>
+<label class="formrow"><span>必要な記録が揃っている</span><input id="records_complete" type="checkbox" data-interactive></label>
+<label class="formrow"><span>受領権限が一致している</span><input id="authorized" type="checkbox" data-interactive></label>
+<label class="formrow"><span>証拠の照合状態が正常</span><input id="evidence_intact" type="checkbox" data-interactive></label>
+<label class="formrow"><span>上流の保留が解消している</span><input id="upstream_clear" type="checkbox" data-interactive></label>
+<label class="formrow"><span>許可後・実行前に状況が変わる</span><input id="change_before_execution" type="checkbox" data-interactive></label>
+<label class="formrow"><span>実行後の結果が一致する</span><input id="result_matches" type="checkbox" data-interactive></label>
+<button id="run" class="btn main full" data-interactive>この条件で新規実行</button>
+<p class="note" style="margin-top:10px">チェックは試験用の申告値です。実際の権限認証・温度計測・センサー真正性を、この公開モデルが確認するものではありません。</p>
+</section>
+<section class="panel"><div class="livehead"><div><div class="eyebrow" id="runLabel">このブラウザでの公開モデル実行</div><h3 id="scenarioTitle">記録が不足</h3></div><span id="decision" class="badge hold">未実行</span></div>
+<div class="comparison"><div class="lane"><div class="lanehead">確認処理を外した経路<small>比較用モデル</small></div><div class="numbers"><div><b id="baseCalls">—</b><span>操作呼出</span></div><div><b id="baseEffects">—</b><span>模擬作用</span></div><div><b id="baseConfirmed">—</b><span>成功扱い</span></div></div><p>入力条件や結果を確認せず、要求を実行して成功扱いにする比較です。</p></div>
+<div class="lane controlled"><div class="lanehead">確認処理を通す経路<small>公開参照モデル</small></div><div class="numbers"><div><b id="gateCalls">—</b><span>操作呼出</span></div><div><b id="gateEffects">—</b><span>模擬作用</span></div><div><b id="gateConfirmed">—</b><span>成功確定</span></div></div><p id="gateNote">実行前・直前・実行後の確認を行います。</p></div></div>
+<div class="flow" id="flow" aria-label="今回進んだ段階"><span data-stage="precheck">① 条件確認</span><span data-stage="recheck">② 実行直前</span><span data-stage="execution">③ 模擬実行</span><span data-stage="postcheck">④ 結果確認</span></div>
+<div class="explanation" id="reason">実行結果はまだありません。</div><p class="resultnote" id="effectNote">表示は今回の試行だけの件数です。実物流の性能値ではありません。</p>
+<div class="buttonrow"><button class="btn" id="complete" data-interactive>不足記録を補完して再試行</button><button class="btn" id="repeat" data-interactive>同じ要求を再送</button><button class="btn" id="save-session" data-interactive>この記録を保存</button></div>
+<div class="history" id="history" aria-label="同じ要求の試行履歴"></div><p class="resultnote" id="sessionTotals"></p><div class="statusline" role="status" aria-live="polite" id="demoStatus"></div>
+</section></div>
+<div class="lower"><section class="panel"><h3>正常だけでなく、境界と異常も試す。</h3><p class="sub">30ケース、公開入力192通り、形式不正・改変・補完・再送の確認を実行します。件数は非公開エンジンの試験と合算しません。</p><div class="buttonrow"><button class="btn dark" id="run-tests">公開モデルの全試験を実行</button><button class="btn" id="show-checks">記録の検証へ</button></div><div class="toast" id="testResult" role="status" aria-live="polite">公開モデルの全試験は未実行です。</div><details><summary>30ケースの内訳</summary><div class="mini-table" id="case-table"></div></details></section>
+<section class="panel"><h3>保留からの回復も、再送の拒否も。</h3><p class="sub">「記録不足」で保留を確認した後、試験用の不足だけを解消して再試行できます。正常実行の後は、同じ要求を再送しても模擬作用を追加しません。</p><div class="factline"><span>今回の記録</span><strong id="recordState">未作成</strong></div><div class="factline"><span>記録の種類</span><strong>公開モデルの計算記録</strong></div><p class="note">このタブの計算は同じブラウザ内です。独立した模擬WMSの実測は、次の「実測50ケース」で確認できます。</p><details><summary>記録の内容識別値を見る</summary><code id="sessionHash">—</code></details></section></div>
+<div class="recordselect" id="savedPanel" hidden><h3>Pythonで作成した保存記録</h3><p class="sub">この一覧はPython出力です。選択した記録をブラウザ側で再計算し、判定と件数を照合します。上の新規実行とは別枠です。</p><select id="savedSelect" aria-label="Python保存記録を選択"></select><button id="savedVerify" class="btn">選んだ記録を再計算</button><div id="savedResult" role="status" class="toast"></div></div>
+</section>
+<section id="panel-evidence" role="tabpanel" aria-labelledby="tab-evidence" hidden>
+<div class="sectionhead"><div><h2>非公開エンジンの挙動を、観測証拠で示す。</h2><p class="sub">v3で収録した50ケースの保存記録を、変更せず引き継いでいます。ケースの切替は再実行ではありません。</p></div><span class="scopechip">別プロセスの模擬WMS · 同一管理者</span></div>
+<div class="kpis"><div class="kpi"><span>対象操作を事前に拒否</span><b id="k-prevent">—</b></div><div class="kpi"><span>実行後の異常を隔離</span><b id="k-contain">—</b></div><div class="kpi"><span>正常・回復が成立</span><b id="k-normal">—</b></div><div class="kpi"><span>期待した挙動との一致</span><b id="k-total">—</b></div></div>
+<p class="note">50件には検出限界の負の対照1件を含みます。事後隔離を事前阻止として数えず、実運用の事故防止率・攻撃遮断率にも換算しません。</p>
+<div class="evidence-layout" style="margin-top:15px"><aside class="panel"><h3>50ケースの結果と観測</h3><div class="filters"><input id="evidenceSearch" aria-label="ケース名を検索" placeholder="ケースを検索"><select id="evidenceFilter" aria-label="実測ケースの分類"><option value="all">すべて</option><option value="prevention">事前拒否</option><option value="containment">事後隔離</option><option value="normal">正常</option><option value="recovery">回復</option><option value="negative_control">検出限界</option></select></div><div id="evidenceList" class="caselist"></div><p class="note" id="listCount"></p></aside>
+<section class="panel"><div class="livehead"><div><div class="eyebrow" id="evCaseId"></div><h3 id="evTitle"></h3></div><span class="badge" id="evOutcome"></span></div><p id="evStory" style="margin-top:14px"></p><div class="evidence-counts"><div><span>対象試行の操作呼出</span><strong id="evCalls">—</strong></div><div><span>対象試行の模擬作用</span><strong id="evEffects">—</strong></div></div><p class="note" id="evTotals"></p><div class="interpret"><h3>この結果から言えること</h3><p id="evMeaning"></p><p class="note" id="evLimit"></p></div><div class="buttonrow"><button id="goEvidenceVerify" class="btn main">この50件の証拠を検証</button><button id="save-evidence" class="btn">最小証拠を保存</button></div></section></div>
+<div class="lower"><section class="panel"><h3>公開するのは、挙動を確かめるための証拠。</h3><p class="sub">署名付きの試行計画、観測件数、結果区分、集計を収録しています。内部の業務閾値、原入力、詳細トレース、鍵の秘密部分は収録していません。</p><details><summary>照合対象の識別値</summary><p class="note">実行ID</p><code id="evidenceRunId"></code><p class="note">同梱の基準鍵指紋</p><code id="evidenceKeyset"></code></details></section><section class="panel"><h3>50ケースの原記録に付随する内部試験報告</h3><div class="factline"><span>従来の回帰テスト</span><strong id="privateBaseline">—</strong></div><div class="factline"><span>公開制御・観測の追加テスト</span><strong id="privateDisclosure">—</strong></div><div class="factline"><span>別実装との原入力比較</span><strong id="privateDifferential">—</strong></div><p class="note">これらは内部試験の実行報告です。公開検証器がそのテスト全体を再実行するものではありません。この原記録のLean欄は未実施のままです。今回追加した公開モデルのLean検査とは別対象です。外部監査・実WMS接続は未実施です。</p></section></div>
+</section>
+<section id="panel-verify" role="tabpanel" aria-labelledby="tab-verify" hidden>
+<div class="sectionhead"><div><h2>表示だけでなく、記録そのものを確かめる。</h2><p class="sub">ファイルの読込・計算は端末内だけで行います。外部へ送信しません。</p></div></div>
+<div class="verifylayout"><section class="panel"><h3>A. 自分で動かした公開モデルの記録</h3><p class="sub">入力から判定・模擬操作の件数を再計算します。ブラウザとPythonで相互に検証できます。</p><div class="buttonrow"><button id="load-current" class="btn">今回の記録をセット</button><label class="btn filebtn" tabindex="0">JSONを読み込む<input id="record-file" type="file" accept=".json,application/json"></label><button id="tamper-session" class="btn">コピーを改変して試す</button></div><details id="recordEditor"><summary>公開デモJSONを確認・編集</summary><label for="recordText" class="note">600KB以下。秘密情報・実データは入れないでください。</label><textarea id="recordText" class="field" spellcheck="false" aria-label="検証する公開デモJSON"></textarea></details><div class="buttonrow"><button id="verify-record" class="btn main">判定・件数を再計算</button></div><div class="toast" id="recordVerifyResult" role="status" aria-live="polite">未検証です。</div><p class="note">ハッシュは署名ではありません。入力と計算結果を整合させて作り直した記録は、別の有効な記録として通り得ます。発行者認証や現場の真正性は証明しません。</p></section>
+<section class="panel"><h3>B. 非公開エンジンの50ケース証拠</h3><p class="sub">計画・観測・報告の署名、対象の結び付き、試行の完備、件数と集計を検査します。内部判定の再計算とは異なります。</p><label for="keypin" class="note">別経路で確認した鍵指紋（任意）</label><input id="keypin" class="field" placeholder="空欄なら同梱の基準鍵と照合" autocomplete="off" maxlength="64"><div class="buttonrow"><button id="verify-evidence" class="btn main">署名・観測を検証</button><button id="tamper-evidence" class="btn">署名の改変テスト</button><label class="btn filebtn" tabindex="0">証拠JSONを読み込む<input id="evidence-file" type="file" accept=".json,application/json"></label></div><div class="toast" id="evidenceVerifyResult" role="status" aria-live="polite">未検証です。</div><p class="note">同梱鍵だけでは組織の身元確認になりません。別プロセスの観測も同一管理者の環境です。第三者認証・第三者監査とは表現しません。</p><details><summary>確認できる範囲</summary><p class="note">署名対象の整合性／計画した50件と観測・報告の対応／事前拒否時の対象作用0／事後隔離時の試行発生／分類別の集計。内部判定の完全性や物理的な温度の真実性は対象外です。</p></details></section></div>
+</section>
+<section id="panel-formal" role="tabpanel" aria-labelledby="tab-formal" hidden>
+<div class="sectionhead"><div><h2>形式検証を、操作モデルと結び付ける。</h2><p class="sub">従来の公開版に含めた7つの抽象条件と2つの状態だけを形式化。非公開の業務閾値や内部構造は含みません。</p></div><span class="scopechip">Lean 4.32.1 · 公開モデル限定</span></div>
+<div class="kpis"><div class="kpi"><span>Leanカーネルで検査した命題</span><b>37 <small>命題</small></b></div><div class="kpi"><span>Python ↔ JavaScriptの照合</span><b>768 <small>組</small></b></div><div class="kpi"><span>操作と記録の公開試験</span><b>272 <small>検査</small></b></div><div class="kpi"><span>同一要求の作用回数</span><b>最大1回</b></div></div>
+<div class="callout" id="formal-status"><b>公開モデルの37命題をLeanカーネルで検査済み。</b> 画面のJavaScript・Python・Leanモデルは全768組で照合済みです。任意長の操作列の性質は帰納法で証明し、有限の試験回数だけで主張しません。検証対象は公開モデルです。</div>
+<div class="twocol" style="margin-top:16px"><section class="panel"><h3>何を数理的に確かめるか</h3>
+<table class="scope-table"><tr><th>実行前</th><td>権限・証拠・品質条件を満たさない操作に、模擬作用を生じさせない。</td></tr><tr><th>直前変更</th><td>実行直前の条件変更があれば、操作を呼び出さない。</td></tr><tr><th>実行後</th><td>結果不一致は成功確定せず隔離。作用が起きたことは隠さない。</td></tr><tr><th>操作列</th><td>任意長の同一引き渡しの試行列で、模擬作用は最大1回。隔離後は作用を追加しない。</td></tr><tr><th>正常系</th><td>条件が揃えば成立し、保留だけなら不足情報の補完後に再試行できる。</td></tr></table>
+<p class="note">同じ引き渡しの状態を保持する逐次実行が前提です。JSON解析、観測値の真実性、暗号、OS・言語処理系、物理設備は証明対象外です。非公開エンジンとの同値性も主張しません。</p>
+<div class="buttonrow"><button class="btn" id="lean-download">公開Leanソースを保存</button><button class="btn main" id="run-safety">全768組の実装検査</button></div><div class="toast" id="safety-result" role="status">この画面での全状態検査は未実行です。Leanの起動とは別の試験です。</div>
+</section><section class="panel"><h3>証明と実装のずれを検査する</h3>
+<p class="sub">判定だけでなく、理由の順序、実行段階、操作・作用・確定件数、次の状態まで照合します。成功する経路だけを抜き出しません。</p>
+<pre><code>python poc.py model-check
+python poc.py formal-check</code></pre>
+<p class="note">後者はLean本体を起動し、37命題と768個の具体的な一致命題を検査します。意図的な偽命題5件が拒否されることも確認します。Leanがなければ成功を返しません。先頭のコメントや画面表示を証明の代用にはしません。</p>
+<table class="scope-table"><tr><th>モデル</th><td><code>ColdChainPublic.lean</code></td></tr><tr><th>実装</th><td><code>poc.py</code> と <code>index.html</code> の実関数</td></tr><tr><th>自動検査</th><td><code>.github/workflows/verify.yml</code>。証明失敗・実装不一致は成功扱いにしません。</td></tr></table>
+<details><summary>納品時のLean実行記録と対象ハッシュ</summary><p class="note">作成者環境での実行報告です。第三者認証ではありません。証明ソースと下記の対象を、同梱コマンドで再検査できます。</p><pre id="formal-execution-report">{
+  &quot;report_type&quot;: &quot;publisher-execution-report;not-third-party-attestation&quot;,
+  &quot;recorded_at_utc&quot;: &quot;2026-10-31T17:23:32+00:00&quot;,
+  &quot;status&quot;: &quot;PASS&quot;,
+  &quot;lean_version&quot;: &quot;Lean (version 4.32.1, x86_64-unknown-linux-gnu, commit f054605aea4b840552cca2e725580bffd1e1b704, Release)&quot;,
+  &quot;theorems_checked&quot;: 37,
+  &quot;concrete_output_equalities&quot;: 768,
+  &quot;false_claims_rejected&quot;: [
+    &quot;unauthorized_call&quot;,
+    &quot;missing_record_call&quot;,
+    &quot;duplicate_effect&quot;,
+    &quot;mismatch_confirmed&quot;,
+    &quot;altered_observation&quot;
+  ],
+  &quot;proof_dependency_audit&quot;: {
+    &quot;proof_holes&quot;: 0,
+    &quot;custom_axioms&quot;: 0,
+    &quot;native_decide&quot;: 0,
+    &quot;standard_axioms_used&quot;: [
+      &quot;propext&quot;
+    ],
+    &quot;other_36_theorems&quot;: &quot;no-axioms&quot;
+  },
+  &quot;bindings&quot;: {
+    &quot;source_sha256&quot;: &quot;446c4cd8fde3bcbeca4126fc78f30e37281ebc57839d2c121808e0d90a6036c7&quot;,
+    &quot;python_sha256&quot;: &quot;5b13228b16076b48fd02987668f06052ffd9278843e3b408d725c76ce8601ade&quot;,
+    &quot;javascript_sha256&quot;: &quot;64d1766b9d2213efd9062ea12649d1079d50daf5357758d34f93d2d0a690e699&quot;,
+    &quot;certificate_sha256&quot;: &quot;9476175a3b124e8953b9161ad3b59e661d60bb9483fa4e708a441d527f04ba64&quot;
+  },
+  &quot;scope&quot;: &quot;public-reference-model-only;sequential-same-handoff-with-state-retained&quot;,
+  &quot;not_proved&quot;: [
+    &quot;private-engine&quot;,
+    &quot;parser&quot;,
+    &quot;cryptography&quot;,
+    &quot;language-runtime&quot;,
+    &quot;real-equipment&quot;,
+    &quot;distributed-exactly-once&quot;
+  ]
+}</pre></details>
+<details><summary>37命題の公開ソースを確認</summary><pre id="lean-source-view">import Std
+
+/-!
+# Cold-chain public reference model — formal boundary
+Only the seven coarse conditions and two state bits already exposed by v3 are modeled.
+This is NOT the private implementation, a sensor-authenticity proof, or a WMS proof.
+Input decoding, cryptography, JavaScript/Python runtimes, network and physical effects
+are outside this model. Concrete implementation comparisons are a separate check.
+No proprietary thresholds, raw logs, key-management or liability logic is introduced.
+Recheck: `python poc.py formal-check` (requires the pinned Lean toolchain).
+-/
+set_option autoImplicit false
+set_option maxRecDepth 4096
+set_option synthInstance.maxSize 4096
+set_option maxHeartbeats 0
+
+namespace ColdChainPublic
+inductive Quality where
+  | ok | review | fail
+  deriving DecidableEq, BEq, Repr
+inductive Status where
+  | denied | hold | released | quarantined
+  deriving DecidableEq, BEq, Repr
+inductive Stage where
+  | precheck | recheck | complete | postcheck
+  deriving DecidableEq, BEq, Repr
+inductive Reason where
+  | quarantineLock | alreadyExecuted | authorityMismatch | evidenceMismatch
+  | qualityFailed | recordsMissing | upstreamUnresolved | qualityReview
+  | conditionsChanged | resultMismatch
+  deriving DecidableEq, BEq, Repr
+structure Input where
+  quality : Quality
+  records : Bool
+  authorized : Bool
+  evidence : Bool
+  upstream : Bool
+  changed : Bool
+  resultMatches : Bool
+  deriving DecidableEq, Repr
+structure State where
+  consumed : Bool
+  quarantined : Bool
+  deriving DecidableEq, Repr
+structure Outcome where
+  status : Status
+  stage : Stage
+  reasons : List Reason
+  calls : Nat
+  effects : Nat
+  confirmed : Nat
+  quarantined : Bool
+  next : State
+  deriving DecidableEq, Repr
+
+def initial : State := ⟨false, false⟩
+def hard (x : Input) : List Reason :=
+  (if x.authorized then [] else [.authorityMismatch]) ++
+  (if x.evidence then [] else [.evidenceMismatch]) ++
+  (if x.quality == .fail then [.qualityFailed] else [])
+def soft (x : Input) : List Reason :=
+  (if x.records then [] else [.recordsMissing]) ++
+  (if x.upstream then [] else [.upstreamUnresolved]) ++
+  (if x.quality == .review then [.qualityReview] else [])
+def stopped (s : State) (status : Status) (stage : Stage) (rs : List Reason) : Outcome :=
+  ⟨status, stage, rs, 0, 0, 0, false, s⟩
+def step (s : State) (x : Input) : Outcome :=
+  if s.quarantined then stopped s .denied .precheck [.quarantineLock]
+  else if s.consumed then stopped s .denied .precheck [.alreadyExecuted]
+  else if !(hard x).isEmpty then stopped s .denied .precheck (hard x)
+  else if !(soft x).isEmpty then stopped s .hold .precheck (soft x)
+  else if x.changed then stopped s .denied .recheck [.conditionsChanged]
+  else if x.resultMatches then ⟨.released, .complete, [], 1, 1, 1, false, ⟨true, s.quarantined⟩⟩
+  else ⟨.quarantined, .postcheck, [.resultMismatch], 1, 1, 0, true, ⟨true, true⟩⟩
+
+def eligible (s : State) (x : Input) : Bool :=
+  !s.consumed &amp;&amp; !s.quarantined &amp;&amp; (x.quality == .ok) &amp;&amp;
+  x.records &amp;&amp; x.authorized &amp;&amp; x.evidence &amp;&amp; x.upstream &amp;&amp; !x.changed
+
+/-- Universal local safety relation; no external oracle or native_decide. -/
+theorem step_properties (s : State) (x : Input) :
+  ((step s x).calls = 1 ↔ eligible s x = true) ∧
+  ((step s x).calls = 0 ∨ (step s x).calls = 1) ∧
+  ((step s x).effects = (step s x).calls) ∧
+  ((step s x).confirmed = 1 ↔ (step s x).status = .released) ∧
+  ((step s x).confirmed = 0 ∨ (step s x).confirmed = 1) ∧
+  ((step s x).status = .released → x.resultMatches = true) ∧
+  ((step s x).calls = 1 → x.resultMatches = false → (step s x).status = .quarantined) ∧
+  ((step s x).status = .denied → (step s x).effects = 0) ∧
+  ((step s x).status = .hold → (step s x).effects = 0) ∧
+  (x.authorized = false → (step s x).status = .denied) ∧
+  (x.evidence = false → (step s x).status = .denied) ∧
+  (x.quality = .fail → (step s x).status = .denied) ∧
+  (x.records = false → (step s x).calls = 0) ∧
+  (x.upstream = false → (step s x).calls = 0) ∧
+  (x.quality = .review → (step s x).calls = 0) ∧
+  (x.changed = true → (step s x).calls = 0) ∧
+  (s.consumed = true → (step s x).calls = 0) ∧
+  (s.quarantined = true → (step s x).calls = 0) ∧
+  (s.consumed = true → (step s x).next.consumed = true) ∧
+  (s.quarantined = true → (step s x).next.quarantined = true) ∧
+  ((step s x).calls = 1 → (step s x).next.consumed = true) ∧
+  ((step s x).calls = 1 → x.resultMatches = false → (step s x).next.quarantined = true) ∧
+  ((step s x).calls = 0 → (step s x).next = s) ∧
+  ((step s x).status = .quarantined → (step s x).confirmed = 0) ∧
+  ((step s x).status = .released → x.quality = .ok) ∧
+  (eligible s x = true → x.resultMatches = true → (step s x).status = .released) ∧
+  ((step s x).status = .quarantined → (step s x).effects = 1) ∧
+  ((s.quarantined = true → s.consumed = true) → ((step s x).next.quarantined = true → (step s x).next.consumed = true)) := by
+  cases s with
+  | mk c z =&gt;
+    cases x with
+    | mk q r a e u d m =&gt;
+      cases c &lt;;&gt; cases z &lt;;&gt; cases q &lt;;&gt; cases r &lt;;&gt; cases a &lt;;&gt;
+        cases e &lt;;&gt; cases u &lt;;&gt; cases d &lt;;&gt; cases m &lt;;&gt; decide
+
+theorem calls_iff_eligible (s : State) (x : Input) :
+    (step s x).calls = 1 ↔ eligible s x = true :=
+  (step_properties s x).1
+
+theorem calls_zero_or_one (s : State) (x : Input) :
+    (step s x).calls = 0 ∨ (step s x).calls = 1 :=
+  (step_properties s x).2.1
+
+theorem effects_eq_calls (s : State) (x : Input) :
+    (step s x).effects = (step s x).calls :=
+  (step_properties s x).2.2.1
+
+theorem confirmed_iff_released (s : State) (x : Input) :
+    (step s x).confirmed = 1 ↔ (step s x).status = .released :=
+  (step_properties s x).2.2.2.1
+
+theorem confirmed_zero_or_one (s : State) (x : Input) :
+    (step s x).confirmed = 0 ∨ (step s x).confirmed = 1 :=
+  (step_properties s x).2.2.2.2.1
+
+theorem released_has_matching_result (s : State) (x : Input) :
+    (step s x).status = .released → x.resultMatches = true :=
+  (step_properties s x).2.2.2.2.2.1
+
+theorem called_mismatch_is_quarantined (s : State) (x : Input) :
+    (step s x).calls = 1 → x.resultMatches = false → (step s x).status = .quarantined :=
+  (step_properties s x).2.2.2.2.2.2.1
+
+theorem denied_no_effect (s : State) (x : Input) :
+    (step s x).status = .denied → (step s x).effects = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.1
+
+theorem hold_no_effect (s : State) (x : Input) :
+    (step s x).status = .hold → (step s x).effects = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.1
+
+theorem unauthorized_denied (s : State) (x : Input) :
+    x.authorized = false → (step s x).status = .denied :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.1
+
+theorem bad_evidence_denied (s : State) (x : Input) :
+    x.evidence = false → (step s x).status = .denied :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.1
+
+theorem failed_quality_denied (s : State) (x : Input) :
+    x.quality = .fail → (step s x).status = .denied :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem missing_records_no_call (s : State) (x : Input) :
+    x.records = false → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem upstream_unresolved_no_call (s : State) (x : Input) :
+    x.upstream = false → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem review_quality_no_call (s : State) (x : Input) :
+    x.quality = .review → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem changed_conditions_no_call (s : State) (x : Input) :
+    x.changed = true → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem consumed_no_call (s : State) (x : Input) :
+    s.consumed = true → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem quarantine_no_call (s : State) (x : Input) :
+    s.quarantined = true → (step s x).calls = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem consumed_monotone (s : State) (x : Input) :
+    s.consumed = true → (step s x).next.consumed = true :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem quarantine_monotone (s : State) (x : Input) :
+    s.quarantined = true → (step s x).next.quarantined = true :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem called_consumes (s : State) (x : Input) :
+    (step s x).calls = 1 → (step s x).next.consumed = true :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem mismatch_locks (s : State) (x : Input) :
+    (step s x).calls = 1 → x.resultMatches = false → (step s x).next.quarantined = true :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem no_call_preserves_state (s : State) (x : Input) :
+    (step s x).calls = 0 → (step s x).next = s :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem quarantine_is_not_confirmed (s : State) (x : Input) :
+    (step s x).status = .quarantined → (step s x).confirmed = 0 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem release_requires_quality_ok (s : State) (x : Input) :
+    (step s x).status = .released → x.quality = .ok :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem eligible_matching_releases (s : State) (x : Input) :
+    eligible s x = true → x.resultMatches = true → (step s x).status = .released :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem quarantine_has_prior_effect (s : State) (x : Input) :
+    (step s x).status = .quarantined → (step s x).effects = 1 :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
+
+theorem initial_valid_state_preserved (s : State) (x : Input) :
+    (s.quarantined = true → s.consumed = true) → ((step s x).next.quarantined = true → (step s x).next.consumed = true) :=
+  (step_properties s x).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2
+
+/-- Number of simulated effects over an arbitrary finite sequence. -/
+def totalEffects (s : State) : List Input → Nat
+  | [] =&gt; 0
+  | x :: xs =&gt; (step s x).effects + totalEffects (step s x).next xs
+
+theorem consumed_trace_zero (xs : List Input) (s : State)
+    (h : s.consumed = true) : totalEffects s xs = 0 := by
+  induction xs generalizing s with
+  | nil =&gt; rfl
+  | cons x xs ih =&gt;
+    have hz := consumed_no_call s x h
+    have hn := consumed_monotone s x h
+    simp only [totalEffects, effects_eq_calls, hz, Nat.zero_add]
+    exact ih (step s x).next hn
+
+theorem quarantined_trace_zero (xs : List Input) (s : State)
+    (h : s.quarantined = true) : totalEffects s xs = 0 := by
+  induction xs generalizing s with
+  | nil =&gt; rfl
+  | cons x xs ih =&gt;
+    have hz := quarantine_no_call s x h
+    have hn := quarantine_monotone s x h
+    simp only [totalEffects, effects_eq_calls, hz, Nat.zero_add]
+    exact ih (step s x).next hn
+
+/-- At most one simulated effect for the same handoff, at every trace length. -/
+theorem trace_at_most_once (xs : List Input) (s : State) : totalEffects s xs ≤ 1 := by
+  induction xs generalizing s with
+  | nil =&gt; simp [totalEffects]
+  | cons x xs ih =&gt;
+    cases calls_zero_or_one s x with
+    | inl hz =&gt;
+      simp only [totalEffects, effects_eq_calls, hz, Nat.zero_add]
+      exact ih (step s x).next
+    | inr ho =&gt;
+      have hn := called_consumes s x ho
+      have hz := consumed_trace_zero xs (step s x).next hn
+      simp only [totalEffects, effects_eq_calls, ho, hz]
+      decide
+
+/-- Any nonempty replay after a successful call has no further effect. -/
+theorem replay_cannot_repeat (s : State) (x : Input) (xs : List Input)
+    (h : (step s x).calls = 1) : totalEffects (step s x).next xs = 0 :=
+  consumed_trace_zero xs (step s x).next (called_consumes s x h)
+
+/-- Holding alone does not consume the request, so corrected evidence can be retried. -/
+theorem hold_does_not_consume (s : State) (x : Input)
+    (h : (step s x).status = .hold) : (step s x).next = s := by
+  apply no_call_preserves_state s x
+  rw [← effects_eq_calls s x]
+  exact hold_no_effect s x h
+
+def normal : Input := ⟨.ok, true, true, true, true, false, true⟩
+theorem normal_progress : (step initial normal).status = .released := by decide
+theorem evidence_completion_progress :
+    (step (step initial { normal with records := false }).next normal).status = .released := by decide
+theorem mismatch_then_replay_stops :
+    (step (step initial { normal with resultMatches := false }).next normal).calls = 0 := by decide
+
+def statusCode : Status → Nat
+  | .denied =&gt; 0 | .hold =&gt; 1 | .released =&gt; 2 | .quarantined =&gt; 3
+def stageCode : Stage → Nat
+  | .precheck =&gt; 0 | .recheck =&gt; 1 | .complete =&gt; 2 | .postcheck =&gt; 3
+def reasonCode : Reason → Nat
+  | .quarantineLock =&gt; 0 | .alreadyExecuted =&gt; 1 | .authorityMismatch =&gt; 2
+  | .evidenceMismatch =&gt; 3 | .qualityFailed =&gt; 4 | .recordsMissing =&gt; 5
+  | .upstreamUnresolved =&gt; 6 | .qualityReview =&gt; 7 | .conditionsChanged =&gt; 8
+  | .resultMismatch =&gt; 9
+def bit (b : Bool) : Nat := if b then 1 else 0
+/-- The whole observable result, including reason order and next state, not only PASS. -/
+def fingerprint (s : State) (x : Input) : List Nat :=
+  let y := step s x
+  [statusCode y.status, stageCode y.stage, y.calls, y.effects, y.confirmed,
+   bit y.quarantined, bit y.next.consumed, bit y.next.quarantined] ++
+  y.reasons.map reasonCode
+
+#print axioms step_properties
+#print axioms trace_at_most_once
+#print axioms replay_cannot_repeat
+#print axioms evidence_completion_progress
+end ColdChainPublic
+</pre></details>
+</section></div>
+</section>
+<section id="panel-scope" role="tabpanel" aria-labelledby="tab-scope" hidden>
+<div class="sectionhead"><div><h2>基礎的な引き渡し保証を、過不足なく示す。</h2><p class="sub">共同配送やWMSそのものを作るPoCではなく、引き渡し操作を確認・制御する層のPoCです。</p></div></div>
+<div class="twocol"><section class="panel"><h3>この公開版に入っているもの</h3><table class="scope-table"><tr><th>操作モデル</th><td>条件を変更して実行し、保留・拒否・成立・事後隔離を比較。補完・再送も確認できます。</td></tr><tr><th>実測証拠</th><td>非公開エンジンと別プロセス模擬WMSの50ケース。最小化した署名付き記録を検査できます。</td></tr><tr><th>再検証</th><td>公開モデルの記録は、ブラウザとPythonで再計算。実測証拠は署名・観測・集計を照合します。</td></tr><tr><th>公開しないもの</th><td>内部の判定器・詳細ルール・内部形式モデル・生入力・詳細トレース・非公開の再検証器。公開参照モデルのLeanソースは同梱します。</td></tr></table><div class="callout">公開モデルは、一般的な確認・状態管理の小さな例です。非公開エンジンの代替実装や、内部ロジックとの同値性を主張しません。</div></section>
+<section class="panel"><h3>このPoCが主張しないこと</h3><table class="scope-table"><tr><th>本番適合</th><td class="no">実WMS・実出荷・実センサーへの接続、製品ごとの品質閾値の妥当性、規制適合は未確認です。</td></tr><tr><th>形式証明</th><td class="no">公開参照モデルの37命題と768等式を検査。非公開エンジン全体・実設備・言語処理系・解析器の正しさまで証明したものではありません。</td></tr><tr><th>外部保証</th><td class="no">第三者機関の監査・認証はありません。署名だけで判定内容の真実性を証明しません。</td></tr><tr><th>作用回数の条件</th><td class="no">同じ引き渡しの状態を保持する逐次実行が前提です。画面リセット・プロセス再起動・複数端末間の一意実行は保証しません。</td></tr></table><div class="callout">真正に署名された虚偽データを検出できない例も残しています。「すべての攻撃を防ぐ」「証拠があれば現物も安全」とは読み替えません。</div></section></div>
+<div class="lower"><section class="panel"><h3>最初は、HTMLを開くだけ。</h3><p class="sub">操作、30ケース・192通りの試験、記録の保存と再検証はブラウザ内で完結します。署名検証用の暗号機能が使えない環境では、その署名検証を未対応と表示します。操作とハッシュ再検証は続けられます。</p><h3 style="margin-top:16px">Pythonだけでも実行できます。</h3><pre><code>python poc.py
+python poc.py test
+python poc.py run --case missing --complete
+python poc.py run --case normal --repeat
+python poc.py verify output/実行フォルダ/records.json</code></pre><p class="note">通常実行・公開モデルの再計算はPython標準ライブラリだけです。署名のPython検証のみ、cryptographyが必要です。</p></section>
+<section class="panel"><h3>実WMSへ接続する次の段階</h3><p class="sub">実際の引き渡し要求と、受領・品質・上流の確認をどこから取得するかを決めます。初めは実操作を起こさない並行評価で照合し、停止時の担当者と回復手順を確認したうえで実行経路への接続を検討します。</p><p class="sub">既存WMSの置き換えを前提にしません。対象の操作要求と実行結果を接続点として検討するためのPoCです。実WMSとの接続や本番導入は未実施です。</p><div class="factline"><span>公開パッケージ</span><strong>7ファイル</strong></div><div class="factline"><span>操作・検証の外部通信</span><strong>なし</strong></div><div class="factline"><span>外部サービスへの接続</span><strong>不要</strong></div><p class="note">技術公開は上記の参照モデルに限定しています。共同発表の名義承認・特許との逐条照合・法的許諾は別事項です。GitHubや外部サービスへの自動公開は行いません。</p></section></div>
+</section>
+</main><footer><span>AI ASSURANCE · Cold Chain Cyber Assurance · v5.0.0</span><span>公開参照モデルと、保存済み実測証拠。両者の検証範囲を区別しています。</span></footer>
+</div>
+<script type="application/json" id="public-cases">[{"description":"確認が揃った要求は、模擬引き渡しまで進みます。","expected":"RELEASED","id":"normal","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"正常な引き渡し"},{"description":"温度の申告が正常でも、必要な記録がなければ保留します。","expected":"HOLD","id":"missing","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"記録が不足"},{"description":"品質とは別に、受領を認められた要求かを確認します。","expected":"DENIED","id":"unauthorized","input":{"authorized":false,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"受領権限が不一致"},{"description":"根拠が一致しない要求を、正常な引き渡しに使いません。","expected":"DENIED","id":"tampered","input":{"authorized":true,"change_before_execution":false,"evidence_intact":false,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"証拠が不整合"},{"description":"この例の条件に反する荷物は、次の区間へ進めません。","expected":"DENIED","id":"quality_fail","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"fail","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"品質条件が不成立"},{"description":"最初の確認だけでなく、実行直前にも成立を確認します。","expected":"DENIED","id":"changed","input":{"authorized":true,"change_before_execution":true,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"許可後に状況が変化"},{"description":"実行は発生しますが、成功確定と下流への継続を止めます。","expected":"QUARANTINED","id":"result_mismatch","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":false,"upstream_clear":true},"title":"実行結果が不一致"},{"description":"現在の荷物だけでなく、前の区間の未解決事項も確認します。","expected":"HOLD","id":"upstream","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":false},"title":"上流の保留が未解消"},{"description":"自動的に進めず、人の確認が必要な状態として保留します。","expected":"HOLD","id":"quality_review","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"review","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"品質担当者の確認が必要"},{"description":"不足の補完だけでは、権限不一致は解消しません。","expected":"DENIED","id":"missing_and_auth","input":{"authorized":false,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"不足と権限不一致"},{"description":"資料の追加だけで不整合を無視することはありません。","expected":"DENIED","id":"missing_and_integrity","input":{"authorized":true,"change_before_execution":false,"evidence_intact":false,"quality":"ok","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"不足と証拠不整合"},{"description":"品質確認を優先して権限の不成立を通すことはありません。","expected":"DENIED","id":"review_and_auth","input":{"authorized":false,"change_before_execution":false,"evidence_intact":true,"quality":"review","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"要確認と権限不一致"},{"description":"条件違反がある場合は、単なる保留と区別します。","expected":"DENIED","id":"fail_and_missing","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"fail","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"品質不成立と記録不足"},{"description":"複数の問題がある場合も、実行には進みません。","expected":"DENIED","id":"fail_and_upstream","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"fail","records_complete":true,"result_matches":true,"upstream_clear":false},"title":"品質不成立と上流保留"},{"description":"一つの成立を理由に別の不成立を上書きしません。","expected":"DENIED","id":"auth_and_integrity","input":{"authorized":false,"change_before_execution":false,"evidence_intact":false,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"権限と証拠の不一致"},{"description":"未解決の条件が残る間は引き渡しを保留します。","expected":"HOLD","id":"missing_and_upstream","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":false,"result_matches":true,"upstream_clear":false},"title":"記録不足と上流保留"},{"description":"確認事項を揃える前に実行しません。","expected":"HOLD","id":"review_and_missing","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"review","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"要確認と記録不足"},{"description":"品質確認だけで上流の保留は解消されません。","expected":"HOLD","id":"review_and_upstream","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"review","records_complete":true,"result_matches":true,"upstream_clear":false},"title":"要確認と上流保留"},{"description":"実行前の不足を確認した時点で保留します。","expected":"HOLD","id":"missing_and_change","input":{"authorized":true,"change_before_execution":true,"evidence_intact":true,"quality":"ok","records_complete":false,"result_matches":true,"upstream_clear":true},"title":"記録不足のまま状況変化"},{"description":"前の区間が未解決なら実行段階へ進みません。","expected":"HOLD","id":"upstream_and_change","input":{"authorized":true,"change_before_execution":true,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":false},"title":"上流保留のまま状況変化"},{"description":"人の確認を必要とする状態は自動実行しません。","expected":"HOLD","id":"review_and_change","input":{"authorized":true,"change_before_execution":true,"evidence_intact":true,"quality":"review","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"要確認のまま状況変化"},{"description":"権限不一致は実行前に拒否します。","expected":"DENIED","id":"auth_and_change","input":{"authorized":false,"change_before_execution":true,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"権限不一致と状況変化"},{"description":"不整合な根拠を使う要求は実行しません。","expected":"DENIED","id":"integrity_and_change","input":{"authorized":true,"change_before_execution":true,"evidence_intact":false,"quality":"ok","records_complete":true,"result_matches":true,"upstream_clear":true},"title":"証拠不整合と状況変化"},{"description":"直前の不成立で止まるため、結果確認には進みません。","expected":"DENIED","id":"change_and_result","input":{"authorized":true,"change_before_execution":true,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":false,"upstream_clear":true},"title":"状況変化と結果異常の設定"},{"description":"実行しない場合、結果異常の設定は作用しません。","expected":"HOLD","id":"missing_and_result","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":false,"result_matches":false,"upstream_clear":true},"title":"記録不足と結果異常の設定"},{"description":"拒否した操作は模擬WMSへ渡しません。","expected":"DENIED","id":"auth_and_result","input":{"authorized":false,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":false,"upstream_clear":true},"title":"権限不一致と結果異常の設定"},{"description":"根拠が不整合な要求は実行しません。","expected":"DENIED","id":"integrity_and_result","input":{"authorized":true,"change_before_execution":false,"evidence_intact":false,"quality":"ok","records_complete":true,"result_matches":false,"upstream_clear":true},"title":"証拠不整合と結果異常の設定"},{"description":"確認を要する要求は保留し、実行しません。","expected":"HOLD","id":"review_and_result","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"review","records_complete":true,"result_matches":false,"upstream_clear":true},"title":"要確認と結果異常の設定"},{"description":"上流の保留がある間は結果確認へ進みません。","expected":"HOLD","id":"upstream_and_result","input":{"authorized":true,"change_before_execution":false,"evidence_intact":true,"quality":"ok","records_complete":true,"result_matches":false,"upstream_clear":false},"title":"上流保留と結果異常の設定"},{"description":"複数の問題が重なっても、自動実行には進みません。","expected":"DENIED","id":"multiple_failures","input":{"authorized":false,"change_before_execution":true,"evidence_intact":false,"quality":"fail","records_complete":false,"result_matches":false,"upstream_clear":false},"title":"複数条件が同時に不成立"}]</script>
+<script type="application/json" id="public-evidence">{"keys":{"observer":"29714a35f22f3276c0d25e8463420e4647542ae8ed0251d76a4f12105ace620e","publisher":"744a3bc4d2abd935aa640dec8fbf17d0c339f948295cefa10d404a3d47ec8946"},"observation":{"kind":"observation","payload":{"cases":[{"calls_target":0,"calls_total":0,"case_id":"P01","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P02","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P03","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P04","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P05","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P06","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P07","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P08","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P09","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P10","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P11","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P12","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P13","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":2,"case_id":"P14","effects_target":1,"effects_total":2},{"calls_target":1,"calls_total":1,"case_id":"P15","effects_target":2,"effects_total":2},{"calls_target":0,"calls_total":0,"case_id":"P16","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P17","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P18","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P19","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P20","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P21","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P22","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P23","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P24","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P25","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P26","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P27","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P28","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P29","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P30","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P31","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P32","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P33","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P34","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P35","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P36","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P37","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P38","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P39","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P40","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P41","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P42","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":1,"case_id":"P43","effects_target":0,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P44","effects_target":0,"effects_total":0},{"calls_target":0,"calls_total":0,"case_id":"P45","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P46","effects_target":1,"effects_total":1},{"calls_target":1,"calls_total":1,"case_id":"P47","effects_target":0,"effects_total":0},{"calls_target":1,"calls_total":1,"case_id":"P48","effects_target":1,"effects_total":1},{"calls_target":0,"calls_total":1,"case_id":"P49","effects_target":0,"effects_total":1},{"calls_target":0,"calls_total":0,"case_id":"P50","effects_target":0,"effects_total":0}],"challenge":"d315ba0e4767a9e7e1fd65b0ee675a83f3a7ff8c5b760687d9809c372686e9b9","closed":true,"plan_sha256":"dee225c86bf9a300869027337cf36c7d153d1e40f6453c4e673eeba07a384ea0","run_id":"b70ac5ea233a425695d7cb6b57c75895","schema":"cca.public-observation.v2","scope":"synthetic-only;separate-process-same-administrator;not-third-party-attestation"},"signature":"039303b41735cc8fdc3c4ceb484bf0bb039fb678d7491e3b6c064fdc3935ad1e333b8bd466cc1204ace67ab0a3caf85ade5c4ba55cd582b65e6881217a448b01"},"plan":{"kind":"plan","payload":{"build_commitment":"f036e04dbc2e29a10c80c018d525326779a5d66f7f34e140c8216f672a88af0c","cases":[{"case_id":"P01","category":"prevention","title":"実行権限の不一致"},{"case_id":"P02","category":"prevention","title":"保留状態からの不正な継続"},{"case_id":"P03","category":"normal","title":"通常の引き渡し"},{"case_id":"P04","category":"prevention","title":"記録形式の不備 B"},{"case_id":"P05","category":"prevention","title":"計測に関する確認不足"},{"case_id":"P06","category":"prevention","title":"受領権限の不一致"},{"case_id":"P07","category":"prevention","title":"時刻整合性の不成立"},{"case_id":"P08","category":"containment","title":"実行結果の不整合 A"},{"case_id":"P09","category":"prevention","title":"有効性が成立しない要求"},{"case_id":"P10","category":"prevention","title":"有効性を失った要求"},{"case_id":"P11","category":"prevention","title":"参照情報の更新"},{"case_id":"P12","category":"prevention","title":"引き渡し記録の不足"},{"case_id":"P13","category":"prevention","title":"承認情報の完全性の不備"},{"case_id":"P14","category":"normal","title":"正常な連続引き渡し"},{"case_id":"P15","category":"containment","title":"実行件数の不整合"},{"case_id":"P16","category":"prevention","title":"承認対象の不一致"},{"case_id":"P17","category":"prevention","title":"記録の整合性の不備"},{"case_id":"P18","category":"containment","title":"実行結果の確認不能"},{"case_id":"P19","category":"prevention","title":"記録の有効性の不足"},{"case_id":"P20","category":"prevention","title":"条件外の引き渡し"},{"case_id":"P21","category":"prevention","title":"品質条件の不成立"},{"case_id":"P22","category":"prevention","title":"確認を要する引き渡し"},{"case_id":"P23","category":"prevention","title":"受領要求の真正性の不備"},{"case_id":"P24","category":"prevention","title":"実行側の信頼条件の変更"},{"case_id":"P25","category":"prevention","title":"引き渡し先の不一致"},{"case_id":"P26","category":"containment","title":"実行結果の不整合 B"},{"case_id":"P27","category":"prevention","title":"同じ要求の繰り返し"},{"case_id":"P28","category":"negative_control","title":"真正に署名された虚偽データ"},{"case_id":"P29","category":"prevention","title":"出所不明の承認"},{"case_id":"P30","category":"normal","title":"条件内の引き渡し"},{"case_id":"P31","category":"prevention","title":"受領権限の変更"},{"case_id":"P32","category":"prevention","title":"現物管理上の確認不足"},{"case_id":"P33","category":"prevention","title":"成立しない条件での承認要求"},{"case_id":"P34","category":"recovery","title":"不足情報の解消後の再試行"},{"case_id":"P35","category":"prevention","title":"適用条件の更新"},{"case_id":"P36","category":"prevention","title":"承認情報の改変"},{"case_id":"P37","category":"prevention","title":"記録発行権限の不一致"},{"case_id":"P38","category":"prevention","title":"記録の完全性の不備"},{"case_id":"P39","category":"prevention","title":"対象の不一致"},{"case_id":"P40","category":"prevention","title":"承認の失効"},{"case_id":"P41","category":"prevention","title":"記録形式の不備 A"},{"case_id":"P42","category":"containment","title":"実行結果の真正性の不備"},{"case_id":"P43","category":"prevention","title":"過去の承認の再利用"},{"case_id":"P44","category":"prevention","title":"必要な記録の不足"},{"case_id":"P45","category":"prevention","title":"記録の連続性の不足"},{"case_id":"P46","category":"normal","title":"所定の確認を経た引き渡し"},{"case_id":"P47","category":"containment","title":"実行サービスの障害"},{"case_id":"P48","category":"containment","title":"実行結果の整合性の不備"},{"case_id":"P49","category":"prevention","title":"許可後の状況変化"},{"case_id":"P50","category":"prevention","title":"記録の信頼条件の変更"}],"challenge":"d315ba0e4767a9e7e1fd65b0ee675a83f3a7ff8c5b760687d9809c372686e9b9","run_id":"b70ac5ea233a425695d7cb6b57c75895","schema":"cca.public-plan.v2","scope":"synthetic-only;separate-process-same-administrator;not-third-party-attestation"},"signature":"01b47a2c55c7c317c92a0fdda6f66675248639abcd33e53a72e8ae8dbafa2998bbbe0f2785f2a3eaa1955f9feac0dff136ab034f38e9d7d591395fbcea29070c"},"report":{"kind":"report","payload":{"assurance":"publisher-reported-outcomes;not-reexecution-of-private-policy","build_commitment":"f036e04dbc2e29a10c80c018d525326779a5d66f7f34e140c8216f672a88af0c","cases":[{"case_id":"P01","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P02","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P03","expected_matched":true,"outcome":"RELEASED"},{"case_id":"P04","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P05","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P06","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P07","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P08","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P09","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P10","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P11","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P12","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P13","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P14","expected_matched":true,"outcome":"RELEASED"},{"case_id":"P15","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P16","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P17","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P18","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P19","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P20","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P21","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P22","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P23","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P24","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P25","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P26","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P27","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P28","expected_matched":true,"outcome":"LIMIT_OBSERVED"},{"case_id":"P29","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P30","expected_matched":true,"outcome":"RELEASED"},{"case_id":"P31","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P32","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P33","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P34","expected_matched":true,"outcome":"RELEASED"},{"case_id":"P35","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P36","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P37","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P38","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P39","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P40","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P41","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P42","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P43","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P44","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P45","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P46","expected_matched":true,"outcome":"RELEASED"},{"case_id":"P47","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P48","expected_matched":true,"outcome":"QUARANTINED"},{"case_id":"P49","expected_matched":true,"outcome":"STOPPED"},{"case_id":"P50","expected_matched":true,"outcome":"STOPPED"}],"challenge":"d315ba0e4767a9e7e1fd65b0ee675a83f3a7ff8c5b760687d9809c372686e9b9","checks":{"baseline_tests":{"count":330,"status":"PASS"},"bounded_states":{"count":964,"status":"PASS"},"bounded_transitions":{"count":7756,"status":"PASS"},"disclosure_tests":{"count":235,"status":"PASS"},"external_audit":"NOT_PERFORMED","finite_guards":{"count":2048,"status":"PASS"},"finite_observations":{"count":8192,"status":"PASS"},"input_comparisons":{"count":10000,"status":"PASS"},"lean":"NOT_RUN"},"metrics":{"all_wms_calls":16,"all_wms_effects":16,"cases":50,"containment_cases":7,"expectations_met":50,"limits_observed":1,"negative_controls":1,"normal_recovery_cases":5,"normal_recovery_released":5,"prevention_cases":37,"quarantined_cases":7,"target_calls_prevented":37},"observation_sha256":"c6f9bd60abc8a6b22e67023712b07605d1749e20053db629bea89351a0573338","plan_sha256":"dee225c86bf9a300869027337cf36c7d153d1e40f6453c4e673eeba07a384ea0","run_id":"b70ac5ea233a425695d7cb6b57c75895","schema":"cca.public-report.v2"},"signature":"4272cd5941042c1ca7092120bfcbf54458ed11956acc44c014645848d381c08770ad4597df46fb1beb383a1be22c86fa7428addc5b0dfaf49dbaf7ad50ca9b04"},"schema":"cca.public-evidence.v2"}</script>
+<script type="application/json" id="saved-records">null</script>
+<script id="cca-core">
+'use strict';
+const enc=new TextEncoder();
+const MODEL='cca.coarse-public-model.v1';
+const DEMO_SCOPE='public-reference-only;synthetic;not-private-engine;not-sensor-authentication';
+const INPUT_FIELDS=['quality','records_complete','authorized','evidence_intact','upstream_clear','change_before_execution','result_matches'];
+const GROUP={prevention:'事前拒否',containment:'事後隔離',normal:'正常',recovery:'回復',negative_control:'検出限界'};
+const OUT={STOPPED:'事前拒否',QUARANTINED:'実行後隔離',RELEASED:'引き渡し成立',LIMIT_OBSERVED:'検出限界'};
+function strictParse(text){
+ if(typeof text!=='string'||enc.encode(text).length>600000)throw Error('ファイルの上限は600KBです');let pos=0;
+ const bad=()=>{throw Error('JSONの形式・型・サイズが不正です')};
+ const ws=()=>{while(pos<text.length&&/[\x20\t\n\r]/.test(text[pos]))pos++};
+ function string(){let start=pos++;while(pos<text.length){const c=text[pos++];if(c==='"'){let s;try{s=JSON.parse(text.slice(start,pos))}catch{bad()}if(s.length>5000)bad();for(let i=0;i<s.length;i++){const u=s.charCodeAt(i);if(u>=0xd800&&u<=0xdbff){const v=s.charCodeAt(++i);if(!(v>=0xdc00&&v<=0xdfff))bad()}else if(u>=0xdc00&&u<=0xdfff)bad()}return s}if(c==='\\')pos++;else if(c.charCodeAt(0)<32)bad()}bad()}
+ function value(depth=0){if(depth>15)bad();ws();const c=text[pos];if(c==='"')return string();if(c==='{'){pos++;const x=Object.create(null);ws();if(text[pos]==='}'){pos++;return x}let n=0;while(true){ws();if(text[pos]!=='"')bad();const key=string();if(Object.hasOwn(x,key)||++n>64)bad();ws();if(text[pos++]!==':')bad();x[key]=value(depth+1);ws();if(text[pos]==='}'){pos++;return x}if(text[pos++]!==',')bad()}}
+ if(c==='['){pos++;const x=[];ws();if(text[pos]===']'){pos++;return x}while(true){if(x.length>=512)bad();x.push(value(depth+1));ws();if(text[pos]===']'){pos++;return x}if(text[pos++]!==',')bad()}}
+ for(const [lit,v]of [['true',true],['false',false],['null',null]])if(text.startsWith(lit,pos)){pos+=lit.length;return v}
+ const m=/^-?(?:0|[1-9][0-9]*)/.exec(text.slice(pos));if(!m)bad();pos+=m[0].length;const n=Number(m[0]);if(!Number.isSafeInteger(n))bad();return n}
+ const result=value();ws();if(pos!==text.length)bad();return result
+}
+function validateInput(x){fields(x,INPUT_FIELDS);if(typeof x.quality!=='string'||!['ok','review','fail'].includes(x.quality))throw Error('品質状態の形式が不正です');for(const k of INPUT_FIELDS.slice(1))if(typeof x[k]!=='boolean')throw Error('確認項目はtrue / falseで指定してください');return x}
+class MockHandoff{constructor(){this.calls=0;this.events=[]}release(){this.calls++;this.events.push('synthetic-handoff')}}
+function transition(x,state){
+ validateInput(x);fields(state,['consumed','quarantined']);for(const k of ['consumed','quarantined'])if(typeof state[k]!=='boolean')throw Error('状態はtrue / falseで指定してください');const operation=new MockHandoff();let reasons=[],status='RELEASED',stage='complete';
+ if(state.quarantined){status='DENIED';stage='precheck';reasons=['QUARANTINE_LOCK']}
+ else if(state.consumed){status='DENIED';stage='precheck';reasons=['ALREADY_EXECUTED']}
+ else{for(const [bad,code]of [[!x.authorized,'AUTHORITY_MISMATCH'],[!x.evidence_intact,'EVIDENCE_MISMATCH'],[x.quality==='fail','QUALITY_FAILED']])if(bad)reasons.push(code);
+  if(reasons.length){status='DENIED';stage='precheck'}else{
+   for(const [bad,code]of [[!x.records_complete,'RECORDS_MISSING'],[!x.upstream_clear,'UPSTREAM_UNRESOLVED'],[x.quality==='review','QUALITY_REVIEW']])if(bad)reasons.push(code);
+   if(reasons.length){status='HOLD';stage='precheck'}else if(x.change_before_execution){status='DENIED';stage='recheck';reasons=['CONDITIONS_CHANGED']}
+  }
+ }
+ const result={status,stage,reasons,calls:0,effects:0,confirmed:0,quarantined:false},next={...state};
+ if(status==='RELEASED'){
+  // The public mock operation is invoked here only. It is not the private or physical WMS.
+  operation.release();result.calls=operation.calls;result.effects=operation.events.length;next.consumed=true;
+  if(x.result_matches)result.confirmed=1;else{Object.assign(result,{status:'QUARANTINED',stage:'postcheck',reasons:['RESULT_MISMATCH'],quarantined:true});next.quarantined=true}
+ }
+ return {result,state:next}
+}
+function summarizeSteps(steps){const x={};for(const k of ['without_checks','with_checks']){x[k]={};for(const f of ['calls','effects','confirmed'])x[k][f]=steps.reduce((a,s)=>a+s[k][f],0)}return x}
+function id(){if(!globalThis.crypto?.getRandomValues)throw Error('この環境では識別子を生成できません');return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(x=>x.toString(16).padStart(2,'0')).join('')}
+function payloadFor(inputs,sessionId){if(!Array.isArray(inputs)||inputs.length<1||inputs.length>32)throw Error('1セッションは1〜32回までです');hex(sessionId,32);let state={consumed:false,quarantined:false};const steps=[];
+ inputs.forEach((x,i)=>{validateInput(x);const t=transition(x,state);state=t.state;steps.push({sequence:i+1,input:JSON.parse(JSON.stringify(x)),without_checks:{calls:1,effects:1,confirmed:1},with_checks:t.result})});
+ return {schema:'cca.public-demo.session.v3',model:MODEL,scope:DEMO_SCOPE,session_id:sessionId,steps,totals:summarizeSteps(steps)}
+}
+async function makeSession(inputs,sessionId=id()){const payload=payloadFor(inputs,sessionId);return {payload,sha256:await hash(payload)}}
+async function verifySession(r){fields(r,['payload','sha256']);const p=r.payload;fields(p,['schema','model','scope','session_id','steps','totals']);if(p.schema!=='cca.public-demo.session.v3'||p.model!==MODEL||p.scope!==DEMO_SCOPE)throw Error('公開モデル・保証範囲が一致しません');hex(r.sha256,64);if(await hash(p)!==r.sha256)throw Error('公開デモ記録のハッシュが一致しません');if(!Array.isArray(p.steps)||p.steps.length<1||p.steps.length>32)throw Error('試行件数が不正です');for(const s of p.steps){fields(s,['sequence','input','without_checks','with_checks']);num(s.sequence,32);if(!s.sequence)throw Error('試行番号が不正です')}
+ const recalculated=await makeSession(p.steps.map(s=>s.input),p.session_id);if(canonical(recalculated)!==canonical(r))throw Error('再計算した判定・実行件数が保存記録と一致しません');return {status:'PASS',attempts:p.steps.length,scope:'public-model-replay;not-external-attestation'}
+}
+async function verifyArtifact(r,pin){if(r?.schema==='cca.public-evidence.v2')return verifyPublic(r,pin);fields(r,['payload','sha256']);if(r.payload?.schema!=='cca.public-demo.pack.v3')return verifySession(r);const p=r.payload;fields(p,['schema','model','scope','sessions']);if(p.model!==MODEL||p.scope!==DEMO_SCOPE||await hash(p)!==r.sha256)throw Error('一括記録の版・範囲・ハッシュに不一致');if(!Array.isArray(p.sessions)||p.sessions.length<1||p.sessions.length>100)throw Error('一括記録の件数が不正です');let attempts=0;for(const s of p.sessions)attempts+=(await verifySession(s)).attempts;return {status:'PASS',sessions:p.sessions.length,attempts,scope:'public-model-replay;not-external-attestation'}}
+async function publicTests(cases){const results=[];const eq=(a,b)=>{if(canonical(a)!==canonical(b))throw Error('期待値との不一致')};const check=async(n,fn)=>{await fn();results.push(n)};
+ for(const row of cases)await check('case:'+row.id,async()=>{const r=await makeSession([row.input],'0'.repeat(32));eq(r.payload.steps[0].with_checks.status,row.expected);await verifySession(r)});
+ for(const q of ['ok','review','fail'])for(let k=0;k<64;k++){const b=Array.from({length:6},(_,i)=>!!(k&(1<<(5-i)))),x=Object.fromEntries(INPUT_FIELDS.map((f,i)=>[f,i?b[i-1]:q]));const allowed=q==='ok'&&b.slice(0,4).every(Boolean)&&!b[4],hard=q==='fail'||!b[1]||!b[2],soft=q==='review'||!b[0]||!b[3];const expected=hard?'DENIED':soft?'HOLD':b[4]?'DENIED':b[5]?'RELEASED':'QUARANTINED';
+  await check('combination:'+q+':'+b.map(Number).join(''),async()=>{const r=await makeSession([x],'0'.repeat(32)),s=r.payload.steps[0].with_checks;eq(s.status,expected);eq(s.calls,Number(allowed));eq(s.effects,Number(allowed));eq(s.confirmed,Number(allowed&&x.result_matches));await verifySession(r)})}
+ const base=cases.find(x=>x.id==='normal').input,invalid=[];for(const key of INPUT_FIELDS){const x={...base};delete x[key];invalid.push(x)}for(const key of INPUT_FIELDS.slice(1))for(const v of ['true',1])invalid.push({...base,[key]:v});invalid.push({...base,quality:'unknown'},{...base,unexpected:true},[],null);
+ for(let i=0;i<invalid.length;i++)await check('invalid:'+i,async()=>{let caught=false;try{await makeSession([invalid[i]])}catch{caught=true}if(!caught)throw Error('不正入力を受理しました')});
+ const original=await makeSession([base],'0'.repeat(32));for(let i=0;i<10;i++)for(const rehash of [false,true]){const x=JSON.parse(JSON.stringify(original)),p=x.payload,s=p.steps[0];
+  if(i===0)s.with_checks.status='DENIED';else if(i===1)s.with_checks.effects=0;else if(i===2)s.with_checks.calls=0;else if(i===3)s.with_checks.confirmed=0;else if(i===4)s.with_checks.stage='precheck';else if(i===5)s.without_checks.effects=0;else if(i===6)p.scope='production-certified';else if(i===7)s.sequence=2;else if(i===8)p.totals.with_checks.calls=2;else s.with_checks.reasons=['AUTHORITY_MISMATCH'];if(rehash)x.sha256=await hash(p);
+  await check('mutation:'+i+':rehash='+String(rehash),async()=>{let caught=false;try{await verifySession(x)}catch{caught=true}if(!caught)throw Error('改変を見逃しました')})}
+ for(const [n,inputs,expect]of [['recovery',[cases.find(x=>x.id==='missing').input,base],['HOLD','RELEASED']],['repeat',[base,base],['RELEASED','DENIED']],['quarantine',[cases.find(x=>x.id==='result_mismatch').input,base],['QUARANTINED','DENIED']]])await check(n,async()=>{const r=await makeSession(inputs,'0'.repeat(32));await verifySession(r);eq(r.payload.steps.map(s=>s.with_checks.status),expect)});
+ for(const [i,t]of ['{"a":1,"a":2}','{"a":NaN}','{"a":1.5}','{"a":1e3}'].entries())await check('strict-json:'+i,async()=>{let caught=false;try{strictParse(t)}catch{caught=true}if(!caught)throw Error('不正JSONを受理しました')});
+ return {status:'PASS',model:MODEL,total:results.length,representative_cases:30,input_combinations:192,additional_checks:results.length-222,checks:results,scope:'public-reference-only;not-private-tests'}
+}
+
+// Standard SHA-256 fallback for public-record integrity. Not an identity signature.
+// Used only when the browser does not expose SubtleCrypto (for example, a preview).
+// The same implementation is checked against hashlib and the standard test vectors.
+function sha256Bytes(bytes){
+ const k=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+ if(!(bytes instanceof Uint8Array)||bytes.length>2000000)throw Error('ハッシュ入力の上限に不一致');
+ const n=Math.ceil((bytes.length+9)/64)*64,data=new Uint8Array(n);data.set(bytes);data[bytes.length]=128;
+ const view=new DataView(data.buffer),bits=bytes.length*8;view.setUint32(n-8,Math.floor(bits/4294967296));view.setUint32(n-4,bits>>>0);
+ const h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],w=new Uint32Array(64),rr=(x,s)=>(x>>>s)|(x<<(32-s));
+ for(let off=0;off<n;off+=64){for(let i=0;i<16;i++)w[i]=view.getUint32(off+i*4);for(let i=16;i<64;i++){const a=w[i-15],b=w[i-2],s0=rr(a,7)^rr(a,18)^(a>>>3),s1=rr(b,17)^rr(b,19)^(b>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0}
+  let [a,b,c,d,e,f,g,j]=h;for(let i=0;i<64;i++){const s1=rr(e,6)^rr(e,11)^rr(e,25),ch=(e&f)^(~e&g),t1=(j+s1+ch+k[i]+w[i])>>>0,s0=rr(a,2)^rr(a,13)^rr(a,22),maj=(a&b)^(a&c)^(b&c),t2=(s0+maj)>>>0;j=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0}for(const [i,v]of [a,b,c,d,e,f,g,j].entries())h[i]=(h[i]+v)>>>0;
+ }
+ return h.map(x=>x.toString(16).padStart(8,'0')).join('')
+}
+
+function canonical(x){if(x===null||typeof x==='boolean'||typeof x==='string')return JSON.stringify(x);if(typeof x==='number'){if(!Number.isSafeInteger(x))throw Error('整数形式に不一致');return String(x)}if(Array.isArray(x))return '['+x.map(canonical).join(',')+']';if(typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canonical(x[k])).join(',')+'}';throw Error('未対応の形式')}
+async function hash(x){const bytes=enc.encode(canonical(x));if(!globalThis.crypto?.subtle)return sha256Bytes(bytes);return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('')}
+function hex(s,n){if(typeof s!=='string'||s.length!==n||!/^[0-9a-f]+$/.test(s))throw Error('16進数形式に不一致');return Uint8Array.from(s.match(/../g).map(v=>parseInt(v,16)))}
+function fields(x,names){if(!x||Array.isArray(x)||typeof x!=='object'||(Object.keys(x).length!==names.length||Object.keys(x).sort().some((k,i)=>k!==names.slice().sort()[i])))throw Error('公開項目に不一致')}
+function num(x,max=100000){if(!Number.isSafeInteger(x)||x<0||x>max)throw Error('件数に不一致')}
+async function sig(e,key,kind){fields(e,['kind','payload','signature']);if(e.kind!==kind)throw Error('署名対象に不一致');const k=await crypto.subtle.importKey('raw',hex(key,64),{name:'Ed25519'},false,['verify']);const p=enc.encode('CCA-SHOWCASE-v2\0'+kind+'\0'),b=enc.encode(canonical(e.payload)),m=new Uint8Array(p.length+b.length);m.set(p);m.set(b,p.length);if(!await crypto.subtle.verify('Ed25519',k,hex(e.signature,128),m))throw Error('署名が一致しません');return e.payload}
+function summarize(plan,obs,rows){const m={cases:0,expectations_met:0,prevention_cases:0,target_calls_prevented:0,containment_cases:0,quarantined_cases:0,normal_recovery_cases:0,normal_recovery_released:0,negative_controls:0,limits_observed:0,all_wms_calls:0,all_wms_effects:0};plan.forEach((p,i)=>{const o=obs[i],r=rows[i];m.cases++;m.expectations_met+=Number(r.expected_matched);m.all_wms_calls+=o.calls_total;m.all_wms_effects+=o.effects_total;if(p.category==='prevention'){m.prevention_cases++;m.target_calls_prevented+=Number(r.outcome==='STOPPED'&&o.calls_target===0&&o.effects_target===0)}else if(p.category==='containment'){m.containment_cases++;m.quarantined_cases+=Number(r.outcome==='QUARANTINED'&&o.calls_target>0)}else if(p.category==='normal'||p.category==='recovery'){m.normal_recovery_cases++;m.normal_recovery_released+=Number(r.outcome==='RELEASED'&&o.calls_target>0)}else{m.negative_controls++;m.limits_observed+=Number(r.outcome==='LIMIT_OBSERVED'&&o.calls_target>0)}});return m}
+async function verifyPublic(d,pin='',challenge=''){if(!globalThis.crypto?.subtle)throw new DOMException('このブラウザでは署名検証が使えません。付属のPython検証器をご利用ください。','NotSupportedError');fields(d,['schema','keys','plan','observation','report']);if(d.schema!=='cca.public-evidence.v2')throw Error('証拠形式に不一致');fields(d.keys,['observer','publisher']);hex(d.keys.observer,64);hex(d.keys.publisher,64);if(d.keys.observer===d.keys.publisher)throw Error('役割鍵に不一致');const fp=await hash(d.keys);if(pin){hex(pin,64);if(fp!==pin)throw Error('指定された鍵指紋に一致しません')}const p=await sig(d.plan,d.keys.observer,'plan');fields(p,['schema','run_id','challenge','build_commitment','scope','cases']);const scope='synthetic-only;separate-process-same-administrator;not-third-party-attestation';if(p.schema!=='cca.public-plan.v2'||p.scope!==scope)throw Error('計画の範囲に不一致');hex(p.run_id,32);hex(p.challenge,64);hex(p.build_commitment,64);if(challenge&&p.challenge!==challenge)throw Error('今回の照合値と一致しません');if(!Array.isArray(p.cases)||p.cases.length!==50)throw Error('計画の件数に不一致');p.cases.forEach((r,i)=>{fields(r,['case_id','category','title']);if(r.case_id!=='P'+String(i+1).padStart(2,'0')||!Object.hasOwn(GROUP,r.category)||typeof r.title!=='string'||!r.title.length||r.title.length>60)throw Error('計画の順序・分類に不一致')});const o=await sig(d.observation,d.keys.observer,'observation');fields(o,['schema','run_id','challenge','plan_sha256','closed','scope','cases']);if(o.schema!=='cca.public-observation.v2'||o.scope!==scope||o.closed!==true||o.run_id!==p.run_id||o.challenge!==p.challenge||o.plan_sha256!==await hash(d.plan)||!Array.isArray(o.cases)||o.cases.length!==50)throw Error('観測計画・完了状態に不一致');o.cases.forEach((r,i)=>{fields(r,['case_id','calls_total','effects_total','calls_target','effects_target']);if(r.case_id!==p.cases[i].case_id)throw Error('観測の順序に不一致');for(const k of ['calls_total','effects_total','calls_target','effects_target'])num(r[k],20);if(r.calls_target>r.calls_total||r.effects_target>r.effects_total||r.effects_total>2*r.calls_total||r.effects_target>2*r.calls_target)throw Error('観測件数に不一致')});const r=await sig(d.report,d.keys.publisher,'report');fields(r,['schema','run_id','challenge','plan_sha256','observation_sha256','build_commitment','cases','metrics','checks','assurance']);if(r.schema!=='cca.public-report.v2'||r.run_id!==p.run_id||r.challenge!==p.challenge||r.plan_sha256!==await hash(d.plan)||r.observation_sha256!==await hash(d.observation)||r.build_commitment!==p.build_commitment||r.assurance!=='publisher-reported-outcomes;not-reexecution-of-private-policy'||!Array.isArray(r.cases)||r.cases.length!==50)throw Error('報告の対象に不一致');r.cases.forEach((x,i)=>{fields(x,['case_id','outcome','expected_matched']);if(x.case_id!==p.cases[i].case_id||!Object.hasOwn(OUT,x.outcome)||typeof x.expected_matched!=='boolean')throw Error('結果に不一致');const v=o.cases[i];if(x.outcome==='STOPPED'&&(v.calls_target||v.effects_target))throw Error('拒否と実行が矛盾');if(['RELEASED','LIMIT_OBSERVED'].includes(x.outcome)&&(v.calls_target!==1||v.effects_target!==1))throw Error('成立と観測が矛盾');if(x.outcome==='QUARANTINED'&&v.calls_target<1)throw Error('隔離と観測が矛盾')});const m=summarize(p.cases,o.cases,r.cases);if(canonical(m)!==canonical(r.metrics)||m.prevention_cases!==37||m.containment_cases!==7||m.normal_recovery_cases!==5||m.negative_controls!==1)throw Error('集計に不一致');const names=['baseline_tests','disclosure_tests','finite_observations','finite_guards','bounded_states','bounded_transitions','input_comparisons'];fields(r.checks,[...names,'lean','external_audit']);for(const n of names){const q=r.checks[n];fields(q,['status','count']);num(q.count);if(!['PASS','NOT_RUN'].includes(q.status)||(q.status==='PASS')!==(q.count>0))throw Error('内部試験報告に不一致')}if(r.checks.lean!=='NOT_RUN'||r.checks.external_audit!=='NOT_PERFORMED')throw Error('保証範囲に不一致');return {fingerprint:fp,metrics:m,pinned:!!pin}}
+
+globalThis.CCA={MODEL,DEMO_SCOPE,INPUT_FIELDS,strictParse,canonical,hash,validateInput,transition,payloadFor,makeSession,verifySession,verifyArtifact,verifyPublic,publicTests};
+</script>
+<script id="cca-ui">'use strict';
+const $=id=>document.getElementById(id);
+const CASES=CCA.strictParse($('public-cases').textContent),EVIDENCE=CCA.strictParse($('public-evidence').textContent);
+const BUILTIN_KEYSET='7f62d163c1ca4defd66919a0f539ef87ccefe13d7f7711426dcdf24e838fee27';
+const NAMES={RELEASED:'成立',HOLD:'保留',DENIED:'拒否',QUARANTINED:'事後隔離'};
+const REASONS={AUTHORITY_MISMATCH:'受領権限が一致していません。',EVIDENCE_MISMATCH:'証拠の照合状態が不整合です。',QUALITY_FAILED:'申告された品質状態が条件外です。',RECORDS_MISSING:'必要な記録が不足しています。',UPSTREAM_UNRESOLVED:'上流の保留がまだ解消していません。',QUALITY_REVIEW:'品質担当者による確認を要する状態です。',CONDITIONS_CHANGED:'許可後・実行直前に状況が変わったため、実行しません。',RESULT_MISMATCH:'模擬操作は発生しましたが、結果が一致しません。成功確定と継続を止めます。',ALREADY_EXECUTED:'同じ要求は既に実行済みです。今回の模擬作用は追加しません。',QUARANTINE_LOCK:'この要求は隔離状態です。条件のチェックを戻すだけでは再実行しません。'};
+let selected='missing',session=null,inputs=[],busy=false,evidenceChoice='P01',evidenceToVerify=EVIDENCE,tests=null;
+function text(id,value){$(id).textContent=value}
+function status(id,value,kind=''){const el=$(id);el.textContent=value;el.className=(id==='demoStatus'?'statusline':'toast')+(kind?' '+kind:'')}
+function activateTab(name){for(const b of document.querySelectorAll('[data-tab]')){const active=b.dataset.tab===name;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;$('panel-'+b.dataset.tab).hidden=!active}}
+for(const b of document.querySelectorAll('[data-tab]')){b.onclick=()=>activateTab(b.dataset.tab);b.onkeydown=e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;e.preventDefault();const tabs=[...document.querySelectorAll('[data-tab]')],i=tabs.indexOf(b),next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;activateTab(tabs[next].dataset.tab);tabs[next].focus()}}
+function formInput(){return Object.fromEntries(CCA.INPUT_FIELDS.map(k=>[k,k==='quality'?$(k).value:$(k).checked]))}
+function setInput(x){for(const k of CCA.INPUT_FIELDS)if(k==='quality')$(k).value=x[k];else $(k).checked=x[k]}
+function lock(value){busy=value;for(const el of document.querySelectorAll('[data-interactive]'))el.disabled=value;if(!value){$('complete').disabled=!session||inputs.at(-1)?.records_complete!==false||inputs.length>=32;$('repeat').disabled=!session||inputs.length>=32;$('save-session').disabled=!session}}
+async function work(fn){if(busy)return;lock(true);try{await fn()}catch(e){status('demoStatus',(e.name==='NotSupportedError'?'未対応・未検証：':'実行できませんでした：')+e.message,'error')}finally{lock(false)}}
+function download(name,value){const blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function presetState(){for(const b of document.querySelectorAll('.preset'))b.setAttribute('aria-pressed',String(b.dataset.case===selected));$('allcases').value=selected}
+async function executeNew(){const next=[formInput()];const created=await CCA.makeSession(next);await CCA.verifySession(created);inputs=next;session=created;renderSession();status('demoStatus','このブラウザで新しい要求を実行し、記録を再計算しました。')}
+async function choose(key){const c=CASES.find(x=>x.id===key);if(!c)throw Error('ケースがありません');selected=key;setInput(c.input);presetState();await executeNew()}
+const presetIds=['normal','missing','unauthorized','tampered','quality_fail','changed','result_mismatch','upstream'];
+for(const [i,k]of presetIds.entries()){const c=CASES.find(x=>x.id===k),b=document.createElement('button');b.className='preset';b.dataset.case=k;b.setAttribute('data-interactive','');b.setAttribute('aria-pressed',String(k===selected));const small=document.createElement('small');small.textContent=String(i+1).padStart(2,'0');b.append(small,document.createTextNode(c.title));b.onclick=()=>work(()=>choose(k));$('presets').append(b)}
+{const op=document.createElement('option');op.value='custom';op.textContent='変更した条件';op.disabled=true;$('allcases').append(op)}
+for(const c of CASES){const op=document.createElement('option');op.value=c.id;op.textContent=c.title;$('allcases').append(op)}
+$('allcases').onchange=()=>work(()=>choose($('allcases').value));
+for(const k of CCA.INPUT_FIELDS)$(k).onchange=()=>{selected='custom';presetState();text('runLabel','入力変更あり · 前回の結果を表示');status('demoStatus','入力を変更しました。「この条件で新規実行」で結果へ反映します。')};
+function renderSession(){const p=session.payload,s=p.steps.at(-1),r=s.with_checks;const c=CASES.find(x=>x.id===selected);text('scenarioTitle',c&&CCA.canonical(c.input)===CCA.canonical(s.input)?c.title:'変更した条件の引き渡し');text('runLabel','公開モデルを実行済み · 今回の試行 '+s.sequence);
+ $('decision').textContent=NAMES[r.status];$('decision').className='badge'+(r.status==='HOLD'?' hold':r.status==='DENIED'?' deny':r.status==='QUARANTINED'?' quarantine':'');
+ for(const [prefix,data]of [['base',s.without_checks],['gate',r]])for(const [suffix,key]of [['Calls','calls'],['Effects','effects'],['Confirmed','confirmed']])text(prefix+suffix,data[key]);
+ text('gateNote',r.status==='RELEASED'?'必要な確認を通り、今回の模擬引き渡しを成功確定しました。':r.status==='QUARANTINED'?'実行は発生しています。結果を成功確定せず、隔離します。':'今回の要求では、模擬WMSの操作呼出は行われていません。');
+ const order=['precheck','recheck','execution','postcheck'],at=r.stage==='complete'?4:order.indexOf(r.stage);
+ for(const el of $('flow').children){const n=order.indexOf(el.dataset.stage);el.className=(r.stage==='complete'||n<at)?'done':n===at?'stopped':''}
+ text('reason',r.reasons.length?r.reasons.map(x=>REASONS[x]).join(' '):'確認が揃ったため、模擬操作を実行しました。実行結果の一致も確認し、引き渡しを成立させます。');
+ text('effectNote',r.status==='QUARANTINED'?'隔離は作用の取消しではありません。今回は作用1・成功確定0として区別しています。':'上の件数は今回の試行だけです。比較経路は確認を外した合成モデルで、現実の全AI・WMSを代表しません。');
+ $('history').replaceChildren();for(const h of p.steps){const span=document.createElement('span');span.textContent=h.sequence+'回目：'+NAMES[h.with_checks.status];span.className=h===s?'current':'';$('history').append(span)}
+ const t=p.totals;text('sessionTotals','同じ要求の累計作用：確認なし '+t.without_checks.effects+' 回 ／ 確認あり '+t.with_checks.effects+' 回。確認ありの成功確定 '+t.with_checks.confirmed+' 回。');
+ text('recordState',p.steps.length+'試行・再計算成立');text('sessionHash',session.sha256);$('recordText').value=JSON.stringify(session,null,2);status('recordVerifyResult','新しい公開モデル記録がセットされました。下のボタンで再検証できます。');
+}
+$('run').onclick=()=>work(executeNew);
+$('complete').onclick=()=>work(async()=>{if(!session||inputs.at(-1).records_complete!==false)throw Error('不足記録のある試行を選んでください');const next={...inputs.at(-1),records_complete:true};const nextInputs=[...inputs,next];const created=await CCA.makeSession(nextInputs,session.payload.session_id);await CCA.verifySession(created);inputs=nextInputs;session=created;setInput(next);renderSession();status('demoStatus','試験用の不足記録だけを補完し、同じ要求の新しい試行を追加しました。')});
+$('repeat').onclick=()=>work(async()=>{if(!session)throw Error('先に実行してください');const nextInputs=[...inputs,{...inputs.at(-1)}];const created=await CCA.makeSession(nextInputs,session.payload.session_id);await CCA.verifySession(created);inputs=nextInputs;session=created;setInput(inputs.at(-1));renderSession();status('demoStatus','同じ入力・同じ要求を再送し、今回の操作件数を計算しました。')});
+$('save-session').onclick=()=>{if(session)download('coldchain-public-session.json',session)};
+$('show-checks').onclick=()=>activateTab('verify');
+$('run-tests').onclick=async()=>{const b=$('run-tests');b.disabled=true;status('testResult','30ケース・192通り・異常系を実行中です…');try{tests=await CCA.publicTests(CASES);status('testResult',tests.total+' / '+tests.total+' 成功\n30ケース + 192通り + その他 '+tests.additional_checks+' 検査\n公開参照モデルの確認です。非公開エンジンの50件とは別です。','pass')}catch(e){status('testResult','未完了：'+e.message,'fail')}finally{b.disabled=false}};
+const table=document.createElement('table'),thead=document.createElement('thead');thead.innerHTML='<tr><th>ケース</th><th>期待結果</th></tr>';table.append(thead);const tbody=document.createElement('tbody');for(const c of CASES){const tr=document.createElement('tr');for(const value of [c.title,NAMES[c.expected]]){const td=document.createElement('td');td.textContent=value;tr.append(td)}tbody.append(tr)}table.append(tbody);$('case-table').append(table);
+function ratio(id,a,b){const el=$(id);el.replaceChildren(document.createTextNode(a+' '));const small=document.createElement('small');small.textContent='/ '+b;el.append(small)}
+function evidenceDetail(){const i=EVIDENCE.plan.payload.cases.findIndex(x=>x.case_id===evidenceChoice),p=EVIDENCE.plan.payload.cases[i],o=EVIDENCE.observation.payload.cases[i],r=EVIDENCE.report.payload.cases[i];text('evCaseId',p.case_id+' / '+GROUP[p.category]);text('evTitle',p.title);text('evOutcome',OUT[r.outcome]);$('evOutcome').className='badge'+(r.outcome==='STOPPED'?' deny':['QUARANTINED','LIMIT_OBSERVED'].includes(r.outcome)?' quarantine':'');text('evCalls',o.calls_target+' 回');text('evEffects',o.effects_target+' 回');text('evTotals','ケース全体：操作呼出 '+o.calls_total+' 回 ／ 模擬作用 '+o.effects_total+' 回。先行する正常操作・回復試行などを含みます。');
+ if(r.outcome==='STOPPED'){text('evStory','対象の操作要求は、実行前に停止しました。別プロセスの模擬WMSでも、対象試行の呼出・作用はともに0でした。');text('evMeaning','停止表示だけでなく、観測対象の模擬WMSに今回の操作が渡らなかったことを照合しています。');text('evLimit','固定した試行・観測窓内の結果です。別経路や実設備での作用まで不存在を証明するものではありません。')}
+ else if(r.outcome==='QUARANTINED'){text('evStory','実行を試みた後、結果の不一致または確認不能を検出し、正常な引き渡しとして確定しませんでした。');text('evMeaning','結果を成功扱いせず、隔離へ移す挙動を確認しました。事前遮断の成功件数には含めていません。');text('evLimit','隔離は既に生じた作用の取消しではありません。作用が生じた件数と成功確定は分けて解釈します。')}
+ else if(r.outcome==='LIMIT_OBSERVED'){text('evStory','整合した署名付きデータでも、元の計測が虚偽であることまでは検出できず、模擬引き渡しが成立しました。');text('evMeaning','これは検出限界の確認です。期待どおりの負の対照であって、防御成功ではありません。');text('evLimit','署名の整合性だけで現物の状態は保証できません。取得元・計測機器・現場運用の確認が別途必要です。')}
+ else{text('evStory','必要な確認を経て、対象試行の模擬引き渡しが成立しました。');text('evMeaning',p.category==='recovery'?'不足情報を解消した後の再試行が、実行へ進むことを確認しました。':'不適合な要求だけを止め、条件を満たす要求は実行できることを確認しました。');text('evLimit','合成の固定条件に対する結果であり、製品品質や実運用での処理性能の保証ではありません。')}
+}
+function evidenceList(){const group=$('evidenceFilter').value,q=$('evidenceSearch').value.trim().toLowerCase(),visible=EVIDENCE.plan.payload.cases.filter(x=>(group==='all'||x.category===group)&&(!q||(x.case_id+' '+x.title).toLowerCase().includes(q)));$('evidenceList').replaceChildren();if(visible.length&&!visible.some(x=>x.case_id===evidenceChoice))evidenceChoice=visible[0].case_id;for(const row of visible){const b=document.createElement('button');b.className='caseitem';b.dataset.id=row.case_id;b.setAttribute('aria-pressed',String(row.case_id===evidenceChoice));const small=document.createElement('small');small.textContent=row.case_id+' / '+GROUP[row.category];b.append(small,document.createTextNode(row.title));b.onclick=()=>{evidenceChoice=row.case_id;evidenceList();evidenceDetail()};$('evidenceList').append(b)}text('listCount',visible.length+' / 50件を表示');if(visible.length)evidenceDetail();else{text('evCaseId','検索結果なし');text('evTitle','一致するケースがありません');text('evOutcome','—');for(const id of ['evStory','evCalls','evEffects','evTotals','evMeaning','evLimit'])text(id,'')}}
+const m=EVIDENCE.report.payload.metrics;ratio('k-prevent',m.target_calls_prevented,m.prevention_cases);ratio('k-contain',m.quarantined_cases,m.containment_cases);ratio('k-normal',m.normal_recovery_released,m.normal_recovery_cases);ratio('k-total',m.expectations_met,m.cases);
+for(const [id,k]of [['privateBaseline','baseline_tests'],['privateDisclosure','disclosure_tests'],['privateDifferential','input_comparisons']]){const n=EVIDENCE.report.payload.checks[k];text(id,n.status==='PASS'?n.count.toLocaleString()+' 件 成功':'未実施')}
+text('evidenceRunId',EVIDENCE.plan.payload.run_id);text('evidenceKeyset',BUILTIN_KEYSET);$('evidenceSearch').oninput=evidenceList;$('evidenceFilter').onchange=evidenceList;evidenceList();
+$('save-evidence').onclick=()=>download('coldchain-minimal-evidence.json',EVIDENCE);$('goEvidenceVerify').onclick=()=>{activateTab('verify');$('verify-evidence').focus()};
+$('load-current').onclick=()=>{if(!session)return;bothRecord(session,'今回の公開モデル記録をセットしました。')};
+function bothRecord(record,message){$('recordText').value=JSON.stringify(record,null,2);status('recordVerifyResult',message)}
+$('verify-record').onclick=async()=>{status('recordVerifyResult','記録を再計算しています…');try{const r=CCA.strictParse($('recordText').value);if(r?.schema==='cca.public-evidence.v2')throw Error('署名付き50件証拠は右側の検証器で確認してください');const result=await CCA.verifyArtifact(r,BUILTIN_KEYSET);status('recordVerifyResult','PASS — 公開モデルの再計算が一致\n'+(result.sessions?result.sessions+'セッション / ':'')+result.attempts+' 試行の判定・件数を確認しました。\n署名や現場の真正性を確認した結果ではありません。','pass')}catch(e){status('recordVerifyResult',(e.name==='NotSupportedError'?'未対応・未検証：':'FAIL — 受理しませんでした\n')+e.message,'fail')}};
+$('tamper-session').onclick=async()=>{if(!session)return;const copy=JSON.parse(JSON.stringify(session));copy.payload.steps.at(-1).with_checks.confirmed^=1;try{await CCA.verifySession(copy);status('recordVerifyResult','異常：変更した記録が受理されました。','fail')}catch(e){status('recordVerifyResult',e.name==='NotSupportedError'?'未対応・未検証：'+e.message:'改変を検出しました\n'+e.message+'\nコピーだけを変更しました。元の記録は保存されています。',e.name==='NotSupportedError'?'fail':'pass')}};
+async function readFile(input){const f=input.files[0];if(!f)throw Error('ファイルが選択されていません');if(f.size>600000)throw Error('ファイルの上限は600KBです');return CCA.strictParse(await f.text())}
+$('record-file').onchange=async()=>{try{const r=await readFile($('record-file'));if(r?.schema==='cca.public-evidence.v2')throw Error('これは50件の署名付き証拠です。右側へ読み込んでください');bothRecord(r,'ファイルを読み込みました。まだ再検証していません。');$('recordEditor').open=true}catch(e){status('recordVerifyResult','読込できませんでした：'+e.message,'fail')}finally{$('record-file').value=''}};
+async function verifyEvidence(tamper=false){const d=tamper?JSON.parse(JSON.stringify(evidenceToVerify)):evidenceToVerify;status('evidenceVerifyResult','署名・観測・集計を確認しています…');if(tamper)d.observation.payload.cases[0].effects_target^=1;try{const v=await CCA.verifyPublic(d,$('keypin').value.trim()||BUILTIN_KEYSET);if(tamper){status('evidenceVerifyResult','異常：改変した証拠が受理されました。','fail');return}status('evidenceVerifyResult','PASS — 計画・観測・報告の署名が一致\n50ケースの完備、操作件数、集計も整合しています。\n'+($('keypin').value.trim()?'入力された鍵指紋':'同梱の基準鍵指紋')+'と照合しました。組織の身元認証ではありません。\n内部判定の再計算は行っていません。','pass')}catch(e){const unsupported=e.name==='NotSupportedError';status('evidenceVerifyResult',unsupported?'未対応・未検証：'+e.message:tamper?'改変を検出しました\n'+e.message+'\n原本は変更していません。':'FAIL — 証拠を受理しませんでした\n'+e.message,tamper&&!unsupported?'pass':'fail')}}
+$('verify-evidence').onclick=()=>verifyEvidence(false);$('tamper-evidence').onclick=()=>verifyEvidence(true);
+$('evidence-file').onchange=async()=>{try{const d=await readFile($('evidence-file'));await CCA.verifyPublic(d,$('keypin').value.trim()||BUILTIN_KEYSET);evidenceToVerify=d;status('evidenceVerifyResult','PASS — 読み込んだ証拠の署名・観測・集計が整合しました。\n「実測50ケース」タブは同梱原本の表示を維持しています。','pass')}catch(e){status('evidenceVerifyResult','受理しませんでした：'+e.message,'fail')}finally{$('evidence-file').value=''}};
+for(const label of document.querySelectorAll('.filebtn'))label.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();label.querySelector('input').click()}};
+const saved=CCA.strictParse($('saved-records').textContent);if(saved){$('savedPanel').hidden=false;const records=saved.payload?.sessions||[];for(const [i,r]of records.entries()){const op=document.createElement('option');op.value=String(i);op.textContent='記録 '+(i+1)+' / '+r.payload.steps.length+' 試行';$('savedSelect').append(op)}text('savedResult',records.length+' 件のPython保存記録です。まだブラウザ側では検証していません。');$('savedVerify').onclick=async()=>{try{const r=records[Number($('savedSelect').value)],v=await CCA.verifySession(r);status('savedResult','PASS — '+v.attempts+' 試行をブラウザで再計算しました。Python記録と一致しています。','pass');bothRecord(r,'Python記録をセットしました。')}catch(e){status('savedResult','FAIL：'+e.message,'fail')}}}
+setInput(CASES.find(x=>x.id===selected).input);presetState();work(executeNew);
+</script>
+<script id="cca-v5-ui">
+'use strict';
+document.getElementById('lean-download').onclick=()=>{const data=document.getElementById('lean-source-view').textContent;const u=URL.createObjectURL(new Blob([data],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='ColdChainPublic.lean';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
+document.getElementById('run-safety').onclick=()=>{const out=document.getElementById('safety-result');try{let count=0;for(const c of [false,true])for(const z of [false,true])for(const quality of ['ok','review','fail'])for(let mask=0;mask<64;mask++){const bits=Array.from({length:6},(_,i)=>!!(mask&(1<<i)));const x=Object.fromEntries(CCA.INPUT_FIELDS.map((k,i)=>[k,i?bits[i-1]:quality]));const s={consumed:c,quarantined:z};const t=CCA.transition(x,s),y=t.result;const allowed=!c&&!z&&quality==='ok'&&bits.slice(0,4).every(Boolean)&&!bits[4];if(y.calls!==Number(allowed)||y.effects!==y.calls||y.confirmed!==Number(allowed&&bits[5])||(c&&!t.state.consumed)||(z&&!t.state.quarantined))throw Error('安全条件との不一致');const second=CCA.transition(x,t.state);if(y.effects&&second.result.effects)throw Error('重複作用');count++;}out.textContent='PASS — '+count+' / '+count+' 組の有限検査が成立。\n実行条件・作用・成功確定・状態保持・再送を検査しました。\nこれはJavaScriptの試験であり、Leanカーネルの実行結果ではありません。';out.className='toast pass'}catch(e){out.textContent='FAIL — '+e.message;out.className='toast fail'}};
+</script></body></html>
